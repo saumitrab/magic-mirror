@@ -1,9 +1,17 @@
 import unittest
+import sys
+from unittest.mock import MagicMock, patch
+
+# Mock ComfyUI 'nodes' module before importing nodes_logic
+sys.modules['nodes'] = MagicMock()
+
 from config import load_config, get_magic_lists
 import numpy as np
 import torch
-from unittest.mock import MagicMock, patch
 from nodes_camera import MagicWebcam
+# Avoid relative import issues in standalone test
+import nodes_logic
+from nodes_logic import MagicPromptBuilder, MagicCharacterSelector, MagicPlaceSelector
 
 def build_prompt(character, place):
     """Hypothetical prompt builder function."""
@@ -71,6 +79,22 @@ class TestMagicMirrorLogic(unittest.TestCase):
         tensor = result[0]
         self.assertEqual(tensor.shape, (1, 512, 512, 3))
         self.assertEqual(torch.sum(tensor).item(), 0.0)
+
+    def test_prompt_builder_node(self):
+        """Tests MagicPromptBuilder formatted output."""
+        node = MagicPromptBuilder()
+        result = node.build(character="Lego Character", place="on the Moon")
+        prompt = result[0]
+        self.assertIn("Lego Character", prompt)
+        self.assertIn("on the Moon", prompt)
+        self.assertIn("Close up portrait", prompt)
+
+    def test_selectors(self):
+        """Tests that selectors return the input value."""
+        char_node = MagicCharacterSelector()
+        place_node = MagicPlaceSelector()
+        self.assertEqual(char_node.select("Pirate")[0], "Pirate")
+        self.assertEqual(place_node.select("in a Jungle")[0], "in a Jungle")
 
 if __name__ == "__main__":
     unittest.main()
