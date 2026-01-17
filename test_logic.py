@@ -1,5 +1,9 @@
 import unittest
 from config import load_config, get_magic_lists
+import numpy as np
+import torch
+from unittest.mock import MagicMock, patch
+from nodes_camera import MagicWebcam
 
 def build_prompt(character, place):
     """Hypothetical prompt builder function."""
@@ -19,6 +23,54 @@ class TestMagicMirrorLogic(unittest.TestCase):
         prompt = build_prompt("Pirate", "on the Moon")
         self.assertIn("Pirate", prompt)
         self.assertIn("on the Moon", prompt)
+
+    @patch('cv2.VideoCapture')
+    def test_webcam_node_logic(self, mock_vc):
+        """Tests MagicWebcam tensor shape logic without opening a real camera."""
+        # Setup mock
+        mock_cap = MagicMock()
+        mock_vc.return_value = mock_cap
+        mock_cap.isOpened.return_value = True
+        
+        # Create a fake BGR frame (100x100x3)
+        fake_frame = np.zeros((100, 100, 3), dtype=np.uint8)
+        fake_frame[0, 0] = [255, 0, 0] # Blue in BGR
+        
+        mock_cap.read.return_value = (True, fake_frame)
+        
+        # Run node
+        node = MagicWebcam()
+        result = node.capture(camera_id=0, capture_button=True)
+        
+        # Verify result shape [1, 100, 100, 3]
+        self.assertIsInstance(result, tuple)
+        tensor = result[0]
+        self.assertEqual(tensor.shape, (1, 100, 100, 3))
+        self.assertEqual(tensor.dtype, torch.float32)
+        
+        # Verify color conversion: Blue (255,0,0) BGR -> Red (1.0, 0, 0) RGB in tensor
+        # Wait, Blue in BGR is [255, 0, 0]. In RGB it should be [0, 0, 1.0].
+        self.assertAlmostEqual(tensor[0, 0, 0, 2].item(), 1.0) # Red channel in RGB at index 0? 
+        # Actually ComfyUI images are [B, H, W, C] where C=0 is Red, 1 is Green, 2 is Blue.
+        # BGR (255, 0, 0) -> Blue=255. RGB (0, 0, 255) -> Blue=1.0. 
+        self.assertAlmostEqual(tensor[0, 0, 0, 2].item(), 1.0) 
+        
+    @patch('cv2.VideoCapture')
+    def test_webcam_error_handling(self, mock_vc):
+        """Tests MagicWebcam error handling returns black tensor."""
+        # Setup mock to fail
+        mock_cap = MagicMock()
+        mock_vc.return_value = mock_cap
+        mock_cap.isOpened.return_value = False
+        
+        # Run node
+        node = MagicWebcam()
+        result = node.capture(camera_id=0, capture_button=True)
+        
+        # Verify black fallback [1, 512, 512, 3]
+        tensor = result[0]
+        self.assertEqual(tensor.shape, (1, 512, 512, 3))
+        self.assertEqual(torch.sum(tensor).item(), 0.0)
 
 if __name__ == "__main__":
     unittest.main()
