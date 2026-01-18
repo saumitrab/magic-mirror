@@ -30,6 +30,10 @@ if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi
 # Install Magic Mirror specific requirements
-pip install opencv-python torch numpy
+if [ -f "custom_nodes/magic-mirror/requirements.txt" ]; then
+    pip install -r custom_nodes/magic-mirror/requirements.txt
+else
+    pip install opencv-python torch numpy torchvision
+fi
 
 echo "Setup complete!"
