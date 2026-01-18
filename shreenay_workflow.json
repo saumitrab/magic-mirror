@@ -1,0 +1,352 @@
+{
+  "id": "3351b35f-4e7a-4102-901c-6aa41fda2971",
+  "revision": 0,
+  "last_node_id": 8,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        399.12890625,
+        756.38671875
+      ],
+      "size": [
+        270,
+        98
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "sd_xl_turbo_1.0_fp16.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MagicCharacterSelector",
+      "pos": [
+        385.85546875,
+        356.3046875
+      ],
+      "size": [
+        294.40390625,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicCharacterSelector"
+      },
+      "widgets_values": [
+        "Pirate"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MagicPlaceSelector",
+      "pos": [
+        403.6953125,
+        507.0546875
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicPlaceSelector"
+      },
+      "widgets_values": [
+        "in a Jungle"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "MagicPromptBuilder",
+      "pos": [
+        739.34375,
+        545.015625
+      ],
+      "size": [
+        173.659765625,
+        46
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "character",
+          "type": "STRING",
+          "link": 4
+        },
+        {
+          "name": "place",
+          "type": "STRING",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicPromptBuilder"
+      }
+    },
+    {
+      "id": 2,
+      "type": "MagicWebcam",
+      "pos": [
+        418.30859375,
+        175.59765625
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicWebcam"
+      },
+      "widgets_values": [
+        0,
+        true
+      ]
+    },
+    {
+      "id": 7,
+      "type": "MagicPainterWrapper",
+      "pos": [
+        1141.4765625,
+        610.79296875
+      ],
+      "size": [
+        270,
+        398
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 3
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 6
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicPainterWrapper"
+      },
+      "widgets_values": [
+        0.6,
+        83888325580622,
+        "randomize"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PreviewImage",
+      "pos": [
+        1503.46484375,
+        555.8515625
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      7,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      1,
+      7,
+      2,
+      "CLIP"
+    ],
+    [
+      3,
+      1,
+      2,
+      7,
+      1,
+      "VAE"
+    ],
+    [
+      4,
+      4,
+      0,
+      6,
+      0,
+      "STRING"
+    ],
+    [
+      5,
+      5,
+      0,
+      6,
+      1,
+      "STRING"
+    ],
+    [
+      6,
+      2,
+      0,
+      7,
+      3,
+      "IMAGE"
+    ],
+    [
+      7,
+      6,
+      0,
+      7,
+      4,
+      "STRING"
+    ],
+    [
+      8,
+      7,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "ds": {
+      "scale": 1,
+      "offset": [
+        4.18359375,
+        -0.86328125
+      ]
+    },
+    "frontendVersion": "1.36.14"
+  },
+  "version": 0.4
+}

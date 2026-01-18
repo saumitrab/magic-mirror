@@ -25,6 +25,7 @@ include/
 !/run_magic_mirror.command
 !/setup.sh
 !/README.md
+!/shreenay_workflow.json
 !/.gitignore
 
 # Standard ComfyUI ignore patterns (precautionary for when setup.sh is run)
