@@ -82,7 +82,8 @@ class TestMagicMirrorLogic(unittest.TestCase):
         prompt = result[0]
         negative = result[1]
         self.assertIn("Lego Buddy", prompt)
-        self.assertIn("Pixar-inspired", prompt)
+        self.assertIn("person in the image", prompt)
+        self.assertIn("Pixar-style", prompt)
         self.assertIn("scary", negative)
 
     def test_prompt_editor(self):
@@ -93,6 +94,13 @@ class TestMagicMirrorLogic(unittest.TestCase):
         self.assertEqual(node.edit("Original", "")[0], "Original")
         # Override
         self.assertEqual(node.edit("Original", "Custom")[0], "Custom")
+
+    def test_status_display(self):
+        """Tests MagicStatusDisplay UI return."""
+        from nodes_logic import MagicStatusDisplay
+        node = MagicStatusDisplay()
+        result = node.display("Hello")
+        self.assertEqual(result["ui"]["text"], "Hello")
 
     def test_selectors(self):
         """Tests that selectors return the input value."""

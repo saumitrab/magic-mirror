@@ -59,7 +59,7 @@ class MagicPromptBuilder:
     CATEGORY = "Magic Mirror"
 
     def build(self, character, place):
-        prompt = f"Vibrant portrait of a {character} {place}, Pixar-inspired 3D style, whimsical, friendly expression, soft cinematic lighting, colorful, highly detailed, masterpieces, 3d render."
+        prompt = f"Vibrant Pixar-style 3D render of the person in the image as a {character} {place}, whimsical, friendly expression, soft cinematic lighting, colorful, highly detailed, masterpiece."
         negative_prompt = "scary, dark, realistic, distorted, ugly, angry, mean, weapons, blood, gore, photorealistic, cinematic"
         print(f"--- Magic Mirror Brain ---\nGenerated Prompt: {prompt}\n--------------------------")
         return (prompt, negative_prompt)
@@ -93,8 +93,8 @@ class MagicPainterWrapper:
                 "clip": ("CLIP",),
                 "image": ("IMAGE",),
                 "prompt": ("STRING", {"forceInput": True}),
-                "negative_prompt": ("STRING", {"default": ""}),
-                "magic_strength": ("FLOAT", {"default": 0.6, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "negative_prompt": ("STRING", {"forceInput": True}),
+                "magic_strength": ("FLOAT", {"default": 0.45, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
             },
         }
@@ -137,13 +137,35 @@ class MagicPainterWrapper:
 
         return (pixels,)
 
+class MagicStatusDisplay:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "text": ("STRING", {"forceInput": True}),
+            },
+        }
+
+    RETURN_TYPES = ()
+    FUNCTION = "display"
+    OUTPUT_NODE = True # This makes it an output node type
+    CATEGORY = "Magic Mirror"
+
+    def display(self, text):
+        # We also print to terminal for debugging
+        print(f"🪄 Status: {text}")
+        # To show it in ComfyUI, we rely on the internal 'text' widget if present,
+        # but for a simple custom node, just having it as an output node is a start.
+        return {"ui": {"text": text}}
+
 # Node mapping for ComfyUI
 NODE_CLASS_MAPPINGS = {
     "MagicCharacterSelector": MagicCharacterSelector,
     "MagicPlaceSelector": MagicPlaceSelector,
     "MagicPromptBuilder": MagicPromptBuilder,
     "MagicPromptEditor": MagicPromptEditor,
-    "MagicPainterWrapper": MagicPainterWrapper
+    "MagicPainterWrapper": MagicPainterWrapper,
+    "MagicStatusDisplay": MagicStatusDisplay
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -151,5 +173,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MagicPlaceSelector": "Magic: Place Selector 🌍",
     "MagicPromptBuilder": "Magic: The Brain 🧠",
     "MagicPromptEditor": "Magic: Prompt Editor ✍️",
-    "MagicPainterWrapper": "Magic: The Painter 🎨"
+    "MagicPainterWrapper": "Magic: The Painter 🎨",
+    "MagicStatusDisplay": "Magic: Status Display 💬"
 }
