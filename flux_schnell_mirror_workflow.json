@@ -39,7 +39,7 @@
             ],
             "widgets_values": [
                 "t5-v1_1-xxl-encoder-Q3_K_M.gguf",
-                "clip_l.safetensors",
+                "clip_l-Q8_0.gguf",
                 "flux"
             ],
             "outputs": [
@@ -237,6 +237,7 @@
                 1.0,
                 0.75,
                 42,
+                "randomize",
                 "euler",
                 "simple"
             ],

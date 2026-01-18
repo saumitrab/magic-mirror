@@ -51,8 +51,8 @@ UNET_URL="https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-s
 CLIP_DIR="models/clip"
 T5_FILE="$CLIP_DIR/t5-v1_1-xxl-encoder-Q3_K_M.gguf"
 T5_URL="https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_M.gguf"
-CLIP_FILE="$CLIP_DIR/clip_l.safetensors"
-CLIP_URL="https://huggingface.co/comfyanonymous/flux_all_in_one/resolve/main/clip_l.safetensors"
+CLIP_FILE="$CLIP_DIR/clip_l-Q8_0.gguf"
+CLIP_URL="https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/clip_l-Q8_0.gguf"
 
 # VAE
 VAE_DIR="models/vae"
