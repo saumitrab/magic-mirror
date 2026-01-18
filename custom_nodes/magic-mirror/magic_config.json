@@ -1,15 +1,16 @@
 {
     "characters": [
-        "Pirate",
-        "Astronaut",
-        "Superhero",
-        "Wizard",
-        "Lego Character"
+        "Friendly Pirate",
+        "Space Explorer",
+        "Super Helper",
+        "Magic Wizard",
+        "Lego Buddy",
+        "Dinosaur Friend"
     ],
     "places": [
-        "in a Jungle",
-        "on the Moon",
-        "under the Ocean",
-        "in a Cyberpunk City"
+        "in a Giant Candy Land",
+        "on a Rainbow Moon",
+        "under a Sparkly Ocean",
+        "in a Toy City"
     ]
 }

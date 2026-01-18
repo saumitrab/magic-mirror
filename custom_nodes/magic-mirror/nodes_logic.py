@@ -53,14 +53,35 @@ class MagicPromptBuilder:
             },
         }
 
-    RETURN_TYPES = ("STRING",)
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("prompt", "negative_prompt")
     FUNCTION = "build"
     CATEGORY = "Magic Mirror"
 
     def build(self, character, place):
-        prompt = f"Close up portrait of a {character} {place}, cinematic lighting, detailed, 8k, photorealistic."
+        prompt = f"Vibrant portrait of a {character} {place}, Pixar-inspired 3D style, whimsical, friendly expression, soft cinematic lighting, colorful, highly detailed, masterpieces, 3d render."
+        negative_prompt = "scary, dark, realistic, distorted, ugly, angry, mean, weapons, blood, gore, photorealistic, cinematic"
         print(f"--- Magic Mirror Brain ---\nGenerated Prompt: {prompt}\n--------------------------")
-        return (prompt,)
+        return (prompt, negative_prompt)
+
+class MagicPromptEditor:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "prompt": ("STRING", {"forceInput": True}),
+                "override_text": ("STRING", {"multiline": True, "default": ""}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("prompt",)
+    FUNCTION = "edit"
+    CATEGORY = "Magic Mirror"
+
+    def edit(self, prompt, override_text):
+        final_prompt = override_text if override_text.strip() else prompt
+        return (final_prompt,)
 
 class MagicPainterWrapper:
     @classmethod
@@ -72,6 +93,7 @@ class MagicPainterWrapper:
                 "clip": ("CLIP",),
                 "image": ("IMAGE",),
                 "prompt": ("STRING", {"forceInput": True}),
+                "negative_prompt": ("STRING", {"default": ""}),
                 "magic_strength": ("FLOAT", {"default": 0.6, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
             },
@@ -81,20 +103,19 @@ class MagicPainterWrapper:
     FUNCTION = "paint"
     CATEGORY = "Magic Mirror"
 
-    def paint(self, model, vae, clip, image, prompt, magic_strength, seed):
+    def paint(self, model, vae, clip, image, prompt, negative_prompt, magic_strength, seed):
         # 1. Encode Text (CLIPTextEncode)
         encoder = nodes.CLIPTextEncode()
         conditioning = encoder.encode(clip, prompt)[0]
         
-        # We need a negative conditioning too, usually just empty text
-        negative_conditioning = encoder.encode(clip, "")[0]
+        # Use provided negative prompt
+        negative_conditioning = encoder.encode(clip, negative_prompt)[0]
 
         # 2. Encode Image (VAEEncode)
         vae_encoder = nodes.VAEEncode()
         latent = vae_encoder.encode(vae, image)[0]
 
         # 3. Sample (KSampler Logic)
-        # Using common_ksampler or KSampler node
         sampler = nodes.KSampler()
         
         # Hardcoded settings for SDXL Turbo
@@ -121,6 +142,7 @@ NODE_CLASS_MAPPINGS = {
     "MagicCharacterSelector": MagicCharacterSelector,
     "MagicPlaceSelector": MagicPlaceSelector,
     "MagicPromptBuilder": MagicPromptBuilder,
+    "MagicPromptEditor": MagicPromptEditor,
     "MagicPainterWrapper": MagicPainterWrapper
 }
 
@@ -128,5 +150,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MagicCharacterSelector": "Magic: Character Selector 🎭",
     "MagicPlaceSelector": "Magic: Place Selector 🌍",
     "MagicPromptBuilder": "Magic: The Brain 🧠",
+    "MagicPromptEditor": "Magic: Prompt Editor ✍️",
     "MagicPainterWrapper": "Magic: The Painter 🎨"
 }

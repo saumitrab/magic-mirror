@@ -4,9 +4,10 @@ Magic Mirror is a collection of custom ComfyUI nodes designed to be simple, inte
 
 ## ✨ Features
 
-- **📸 Magic: The Eye**: A robust webcam capture node optimized for macOS.
-- **🧠 Magic: The Brain**: A simplified prompt builder that combines character and place selections into high-quality AI prompts.
-- **🎨 Magic: The Painter**: A "complexity hider" wrapper around SDXL Turbo sampling. It handles all the technical settings (steps, CFG, etc.) behind the scenes.
+- **📸 Magic: The Eye**: A robust webcam capture node with real-time status feedback.
+- **🧠 Magic: The Brain**: A Pixar-style prompt builder that ensures kid-friendly results with built-in safety filters.
+- **✍️ Magic: Prompt Editor**: A new node that lets you see and manually edit the prompt before painting.
+- **🎨 Magic: The Painter**: Now includes negative-prompt support to keep results clean and fun.
 - **🎭 Customizable**: Characters and places are easily editable via a JSON configuration file.
 - **🚀 One-Click Launcher**: Includes a macOS `.command` script to start everything with one click (including automatic model downloads!).
 

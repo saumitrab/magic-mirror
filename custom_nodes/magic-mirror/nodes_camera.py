@@ -15,7 +15,8 @@ class MagicWebcam:
             },
         }
 
-    RETURN_TYPES = ("IMAGE",)
+    RETURN_TYPES = ("IMAGE", "STRING")
+    RETURN_NAMES = ("IMAGE", "status")
     FUNCTION = "capture"
     CATEGORY = "Magic Mirror"
 
@@ -28,7 +29,7 @@ class MagicWebcam:
             # Fallback: Blank black tensor 512x512
             black_image = np.zeros((512, 512, 3), dtype=np.float32)
             # Standard ComfyUI format: [1, H, W, 3]
-            return (torch.from_numpy(black_image).unsqueeze(0),)
+            return (torch.from_numpy(black_image).unsqueeze(0), "❌ Camera Error")
 
         try:
             # Capture frame
@@ -37,7 +38,7 @@ class MagicWebcam:
             if not ret or frame is None:
                 print(f"Error: Magic Mirror could not read from camera {camera_id}")
                 black_image = np.zeros((512, 512, 3), dtype=np.float32)
-                return (torch.from_numpy(black_image).unsqueeze(0),)
+                return (torch.from_numpy(black_image).unsqueeze(0), "❌ Capture Failed")
 
             # OpenCV is BGR, convert to RGB
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -48,7 +49,7 @@ class MagicWebcam:
             # Convert to Torch Tensor [1, H, W, 3]
             image_tensor = torch.from_numpy(frame).unsqueeze(0)
             
-            return (image_tensor,)
+            return (image_tensor, "📸 Photo Captured!")
             
         finally:
             # Release the camera properly
