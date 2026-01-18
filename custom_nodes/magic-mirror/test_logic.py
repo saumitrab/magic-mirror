@@ -82,10 +82,10 @@ class TestMagicMirrorLogic(unittest.TestCase):
         prompt = result[0]
         negative = result[1]
         self.assertIn("Lego Buddy", prompt)
-        self.assertIn("people in the image", prompt)
-        self.assertIn("theme of", prompt)
-        self.assertIn("Pixar-style", prompt)
-        self.assertIn("scary", negative)
+        self.assertIn("exact same face", prompt)
+        self.assertIn("Pixar animation style", prompt)
+        self.assertIn("preserve the exact facial features", prompt)
+        self.assertIn("blurry", negative)
 
     def test_prompt_editor(self):
         """Tests MagicPromptEditor passthrough and override."""

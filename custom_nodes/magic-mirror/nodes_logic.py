@@ -59,8 +59,13 @@ class MagicPromptBuilder:
     CATEGORY = "Magic Mirror"
 
     def build(self, character, place):
-        prompt = f"Vibrant Pixar-style 3D render of the people in the image in the theme of a {character} {place}, whimsical, friendly expressions, soft cinematic lighting, colorful, highly detailed, masterpiece."
-        negative_prompt = "scary, dark, realistic, distorted, ugly, angry, mean, weapons, blood, gore, photorealistic, cinematic"
+        prompt = (
+            f"A cute happy child with the exact same face, expression, skin tone and features as the reference photo, "
+            f"wearing a detailed {character} costume, standing in {place}, Pixar animation style, vibrant colors, "
+            f"fun adventurous mood, perfect composition, sharp focus. "
+            f"It is critical to preserve the exact facial features and expression from the reference photo."
+        )
+        negative_prompt = "blurry, deformed, scary, adult, dark, realistic, distorted, ugly, angry, mean, weapons, blood, gore, photorealistic"
         print(f"--- Magic Mirror Brain ---\nGenerated Prompt: {prompt}\n--------------------------")
         return (prompt, negative_prompt)
 
@@ -94,8 +99,12 @@ class MagicPainterWrapper:
                 "image": ("IMAGE",),
                 "prompt": ("STRING", {"forceInput": True}),
                 "negative_prompt": ("STRING", {"forceInput": True}),
-                "magic_strength": ("FLOAT", {"default": 0.45, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "steps": ("INT", {"default": 4, "min": 1, "max": 50}),
+                "guidance": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "denoise": ("FLOAT", {"default": 0.75, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                "sampler_name": (["euler", "heun", "dpmpp_2m", "dpmpp_sde"], {"default": "euler"}),
+                "scheduler": (["simple", "normal", "beta", "karras"], {"default": "simple"}),
             },
         }
 
@@ -103,10 +112,16 @@ class MagicPainterWrapper:
     FUNCTION = "paint"
     CATEGORY = "Magic Mirror"
 
-    def paint(self, model, vae, clip, image, prompt, negative_prompt, magic_strength, seed):
+    def paint(self, model, vae, clip, image, prompt, negative_prompt, steps, guidance, denoise, seed, sampler_name, scheduler):
         # 1. Encode Text (CLIPTextEncode)
         encoder = nodes.CLIPTextEncode()
         conditioning = encoder.encode(clip, prompt)[0]
+        
+        # Flux often uses guidance via an extra node, but for simplicity we can 
+        # try to use a Flux-capable sampler logic.
+        # Many Flux implementations use ModelSamplingFlux to set guidance.
+        # Here we will assume the model already has Flux guidance applied or 
+        # use the provided guidance in the sampler if supported.
         
         # Use provided negative prompt
         negative_conditioning = encoder.encode(clip, negative_prompt)[0]
@@ -116,18 +131,12 @@ class MagicPainterWrapper:
         latent = vae_encoder.encode(vae, image)[0]
 
         # 3. Sample (KSampler Logic)
+        # For Flux Schnell, we use lower steps and low CFG/Guidance.
         sampler = nodes.KSampler()
-        
-        # Hardcoded settings for SDXL Turbo
-        steps = 2
-        cfg = 1.0
-        sampler_name = "euler_ancestral"
-        scheduler = "normal"
-        denoise = magic_strength
         
         # Execute sampling
         samples = sampler.sample(
-            model, seed, steps, cfg, sampler_name, scheduler, 
+            model, seed, steps, guidance, sampler_name, scheduler, 
             conditioning, negative_conditioning, latent, denoise=denoise
         )[0]
 

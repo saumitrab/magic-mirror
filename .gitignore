@@ -21,11 +21,14 @@ include/
 /*
 # But we explicitly allow our project files and our specific custom node folder
 !/custom_nodes/
+custom_nodes/*
 !/custom_nodes/magic-mirror/
 !/run_magic_mirror.command
 !/setup.sh
 !/README.md
 !/shreenay_workflow.json
+!/shreenay_workflow_flux_schnell.json
+!/flux_schnell_mirror_workflow.json
 !/.gitignore
 
 # Standard ComfyUI ignore patterns (precautionary for when setup.sh is run)

@@ -11,8 +11,10 @@ Magic Mirror is a collection of custom ComfyUI nodes designed to be simple, inte
 - **🎭 Customizable**: Characters and places are easily editable via a JSON configuration file.
 - **🚀 One-Click Launcher**: Includes a macOS `.command` script to start everything with one click (including automatic model downloads!).
 
-> [!NOTE]
-> **First Run**: The first time you run the project, it will download the SDXL Turbo model (~7GB). Please ensure you have a stable internet connection.
+> [!IMPORTANT]
+> **Flux Schnell Upgrade**: This version uses Flux.1 Schnell GGUF, optimized for MacBook Air memory (16-24GB RAM).
+> 1. Close all other apps (browsers, Slack, etc.) to free up Unified Memory.
+> 2. The first capture may take 1-5 minutes as the model loads into RAM.
 
 ## 🛠️ How It Works
 
@@ -20,7 +22,7 @@ Magic Mirror abstracts the complex parts of AI workflows into friendly, labeled 
 
 1.  **The Input (The Eye)**: Captures a live frame from your webcam.
 2.  **The Logic (The Brain)**: You select a **Character** (e.g., Pirate, Astronaut) and a **Place** (e.g., on the Moon). The "Brain" builds a cinematic prompt like: *"Close up portrait of a Pirate on the Moon, cinematic lighting..."*
-3.  **The Creation (The Painter)**: The Painter takes your webcam photo and the Brain's prompt, then "paints" your transformation using a high-speed AI model (SDXL Turbo).
+3.  **The Creation (The Painter)**: The Painter takes your webcam photo and the Brain's prompt, then "paints" your transformation using **Flux.1 Schnell**, a high-quality model designed for few-step generation on local hardware.
 
 ## 🚀 Getting Started
 
@@ -40,14 +42,30 @@ Magic Mirror abstracts the complex parts of AI workflows into friendly, labeled 
 
 Double-click `run_magic_mirror.command` in the project folder. 
 - **First time**: It will automatically download the ComfyUI core, set up a virtual environment, and install all dependencies.
-- **Subsequent times**: It will simply launch ComfyUI with optimized settings and open your browser.
+- **Subsequent times**: It will simply launch ComfyUI with optimized memory settings (low-vram) and open your browser.
+
+### 📥 Required Models
+
+To use Flux Schnell on MacBook Air, you need the following models:
+
+1.  **UNET (GGUF)**: [flux1-schnell-Q4_0.gguf](https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_0.gguf)
+    - Place in `models/unet/`
+2.  **CLIP (GGUF/Safetensors)**: [t5-v1_1-xxl-encoder-Q3_K_M.gguf](https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_M.gguf) and `clip_l.safetensors`
+    - Place in `models/clip/`
+3.  **VAE**: `flux_ae.safetensors`
+    - Place in `models/vae/`
+
+### 🔧 Custom Nodes
+
+Install the following custom nodes via ComfyUI Manager:
+- `ComfyUI-GGUF` (for loading the quantized models)
 
 ## 🎨 How to Build the Workflow
 
 Once the ComfyUI browser window opens, follow these steps to build your Magic Mirror:
 
 ### 1. The Power Source
-Add a **CheckpointLoaderSimple** (`Add Node > loaders`) and select the `sd_xl_turbo` model.
+Add a **Unet Loader (GGUF)** for the model and **DualCLIPLoader (GGUF)** for the CLIP/T5. Select the Flux models downloaded earlier.
 
 ### 2. Add the Magic Nodes
 Right-click and find the **Magic Mirror** category. Add these nodes:
@@ -76,8 +94,9 @@ Watch yourself transform into a friendly Pixar-style character! 🚀
 
 ## 🧠 Key Design Decisions
 
-- **SDXL Turbo Optimization**: Hardcoded to 2 steps and 1.0 CFG for nearly instant results, essential for keeping children engaged.
-- **Graceful Failures**: If the webcam is busy or fails, the system returns a blank black image instead of crashing, with clear error messages in the console.
+- **Flux Schnell Optimization**: Configured with 4 steps and 1.0 Guidance for the best speed/quality balance on M-series chips.
+- **Memory Management**: Uses `--lowvram` and `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` to prevent crashes on MacBook Air.
+- **Graceful Failures**: If the webcam is busy or fails, the system returns a blank black image instead of crashing.
 - **Color Correction**: Automatically handles OpenCV's BGR to RGB conversion for correct colors in AI processing.
 - **Mac Permissons**: Isoloated camera logic to ensure `cv2.VideoCapture` is properly released to avoid "camera already in use" errors common on macOS.
 

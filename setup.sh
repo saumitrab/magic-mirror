@@ -31,19 +31,56 @@ fi
 # Magic Mirror Core dependencies
 pip install opencv-python torch numpy torchvision
 
-# 4. Download SDXL Turbo Model (Action Required for magic mirror)
-MODEL_DIR="models/checkpoints"
-MODEL_FILE="$MODEL_DIR/sd_xl_turbo_1.0_fp16.safetensors"
-MODEL_URL="https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors"
-
-mkdir -p "$MODEL_DIR"
-
-if [ ! -f "$MODEL_FILE" ]; then
-    echo "Downloading SDXL Turbo model (~7GB)... This may take a while."
-    echo "If it fails, you can manually place the file in $MODEL_DIR"
-    curl -L "$MODEL_URL" -o "$MODEL_FILE"
+# 4. Install Custom Nodes
+echo "Installing custom nodes..."
+mkdir -p custom_nodes
+if [ ! -d "custom_nodes/ComfyUI-GGUF" ]; then
+    echo "Cloning ComfyUI-GGUF..."
+    git clone https://github.com/city96/ComfyUI-GGUF custom_nodes/ComfyUI-GGUF
 else
-    echo "SDXL Turbo model already present."
+    echo "ComfyUI-GGUF already installed."
+fi
+
+# 5. Download Flux Schnell GGUF Models
+# UNET
+UNET_DIR="models/unet"
+UNET_FILE="$UNET_DIR/flux1-schnell-Q4_0.gguf"
+UNET_URL="https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_0.gguf"
+
+# CLIP/T5
+CLIP_DIR="models/clip"
+T5_FILE="$CLIP_DIR/t5-v1_1-xxl-encoder-Q3_K_M.gguf"
+T5_URL="https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_M.gguf"
+CLIP_FILE="$CLIP_DIR/clip_l.safetensors"
+CLIP_URL="https://huggingface.co/comfyanonymous/flux_all_in_one/resolve/main/clip_l.safetensors"
+
+# VAE
+VAE_DIR="models/vae"
+VAE_FILE="$VAE_DIR/flux_ae.safetensors"
+VAE_URL="https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/vae/diffusion_pytorch_model.safetensors"
+
+mkdir -p "$UNET_DIR" "$CLIP_DIR" "$VAE_DIR"
+
+if [ ! -f "$UNET_FILE" ]; then
+    echo "Downloading Flux Schnell UNET (~7GB)..."
+    curl -L "$UNET_URL" -o "$UNET_FILE"
+fi
+
+if [ ! -f "$T5_FILE" ]; then
+    echo "Downloading T5 Encoder (~5GB)..."
+    curl -L "$T5_URL" -o "$T5_FILE"
+fi
+
+if [ ! -f "$CLIP_FILE" ]; then
+    echo "Downloading CLIP-L (~300MB)..."
+    curl -L "$CLIP_URL" -o "$CLIP_FILE"
+fi
+
+if [ ! -f "$VAE_FILE" ]; then
+    echo "Downloading Flux VAE (~300MB)..."
+    # Note: ComfyUI usually expects the name flux_ae.safetensors or diffusion_pytorch_model.safetensors 
+    # but the loader widget might look for specific ones.
+    curl -L "$VAE_URL" -o "$VAE_FILE"
 fi
 
 echo "Setup complete!"
