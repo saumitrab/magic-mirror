@@ -72,6 +72,29 @@ Watch yourself transform in the preview window! 🚀
 - **Color Correction**: Automatically handles OpenCV's BGR to RGB conversion for correct colors in AI processing.
 - **Mac Permissons**: Isoloated camera logic to ensure `cv2.VideoCapture` is properly released to avoid "camera already in use" errors common on macOS.
 
+## 📹 Webcam Troubleshooting (macOS)
+
+If you see an error like `Magic Mirror could not open camera 0` or a black image:
+
+### 1. Grant Permissions
+macOS requires explicit permission for Terminal apps to access the camera.
+1.  Open your Terminal.
+2.  Run the diagnostic script:
+    ```bash
+    source venv/bin/activate
+    python diagnostic_camera.py
+    ```
+3.  **Watch for a macOS popup**: A dialog will appear asking for Camera access. Click **OK**.
+4.  Go to **System Settings > Privacy & Security > Camera** and ensure your Terminal app is toggled **ON**.
+
+### 2. Check Camera ID
+If you have an external webcam, it might not be `ID 0`.
+1.  The `diagnostic_camera.py` script will list all working IDs it finds.
+2.  Update the **Magic: The Eye** node in ComfyUI with the correct `camera_id` (usually `1` for external).
+
+### 3. Background Threading Fix
+We have already added `export OPENCV_AVFOUNDATION_SKIP_AUTH=1` to the launcher to prevent OpenCV from crashing when running inside ComfyUI's background threads.
+
 ## 🧪 Testing
 
 The project includes a suite of unit tests to ensure logic remains sound even if configuration files are modified:

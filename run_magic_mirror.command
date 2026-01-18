@@ -3,6 +3,9 @@
 PROJECT_DIR="$(dirname "$0")"
 cd "$PROJECT_DIR"
 
+# Required for macOS to prevent OpenCV from crashing when requesting camera permissions from a background thread
+export OPENCV_AVFOUNDATION_SKIP_AUTH=1
+
 echo "--- Magic Mirror Launcher ---"
 
 # 1. Automatic Setup Check
