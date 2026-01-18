@@ -29,6 +29,7 @@ custom_nodes/*
 !/shreenay_workflow.json
 !/shreenay_workflow_flux_schnell.json
 !/flux_schnell_mirror_workflow.json
+!/requirements.txt
 !/.gitignore
 
 # Standard ComfyUI ignore patterns (precautionary for when setup.sh is run)
