@@ -41,6 +41,30 @@ Double-click `run_magic_mirror.command` in the project folder.
 - **First time**: It will automatically download the ComfyUI core, set up a virtual environment, and install all dependencies.
 - **Subsequent times**: It will simply launch ComfyUI with optimized settings and open your browser.
 
+## 🎨 How to Build the Workflow
+
+Once the ComfyUI browser window opens, follow these steps to build your Magic Mirror:
+
+### 1. The Power Source
+Add a **CheckpointLoaderSimple** (`Add Node > loaders`) and select the `sd_xl_turbo` model.
+
+### 2. Add the Magic Nodes
+Right-click and find the **Magic Mirror** category. Add these nodes:
+- **Magic: The Eye 📸**: Your camera.
+- **Magic: Character Selector 🎭**: Choose your costume.
+- **Magic: Place Selector 🌍**: Choose your destination.
+- **Magic: The Brain 🧠**: The logic center.
+- **Magic: The Painter 🎨**: The artist.
+
+### 3. Connect the "Noodles"
+- **The Logic**: Connect Selector outputs to **The Brain** inputs.
+- **The Painter**: Connect **MODEL**, **CLIP**, and **VAE** from your Loader to **The Painter**.
+- **The Inputs**: Connect **IMAGE** from **The Eye** and **STRING** from **The Brain** to **The Painter**.
+- **The Result**: Add a **Preview Image** node and connect it to **The Painter's** output.
+
+### 4. Click "Queue Prompt"
+Watch yourself transform in the preview window! 🚀
+
 ## 🧠 Key Design Decisions
 
 - **SDXL Turbo Optimization**: Hardcoded to 2 steps and 1.0 CFG for nearly instant results, essential for keeping children engaged.
