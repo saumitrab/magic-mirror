@@ -21,19 +21,29 @@ if [ ! -d "venv" ]; then
     python3 -m venv venv
 fi
 
-# 3. Install Requirements
+# 3. Install Dependencies
 echo "Installing dependencies..."
 source venv/bin/activate
 pip install --upgrade pip
-# Install ComfyUI requirements
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi
-# Install Magic Mirror specific requirements
-if [ -f "custom_nodes/magic-mirror/requirements.txt" ]; then
-    pip install -r custom_nodes/magic-mirror/requirements.txt
+# Magic Mirror Core dependencies
+pip install opencv-python torch numpy torchvision
+
+# 4. Download SDXL Turbo Model (Action Required for magic mirror)
+MODEL_DIR="models/checkpoints"
+MODEL_FILE="$MODEL_DIR/sd_xl_turbo_1.0_fp16.safetensors"
+MODEL_URL="https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors"
+
+mkdir -p "$MODEL_DIR"
+
+if [ ! -f "$MODEL_FILE" ]; then
+    echo "Downloading SDXL Turbo model (~7GB)... This may take a while."
+    echo "If it fails, you can manually place the file in $MODEL_DIR"
+    curl -L "$MODEL_URL" -o "$MODEL_FILE"
 else
-    pip install opencv-python torch numpy torchvision
+    echo "SDXL Turbo model already present."
 fi
 
 echo "Setup complete!"

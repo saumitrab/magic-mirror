@@ -8,7 +8,10 @@ Magic Mirror is a collection of custom ComfyUI nodes designed to be simple, inte
 - **🧠 Magic: The Brain**: A simplified prompt builder that combines character and place selections into high-quality AI prompts.
 - **🎨 Magic: The Painter**: A "complexity hider" wrapper around SDXL Turbo sampling. It handles all the technical settings (steps, CFG, etc.) behind the scenes.
 - **🎭 Customizable**: Characters and places are easily editable via a JSON configuration file.
-- **🚀 One-Click Launcher**: Includes a macOS `.command` script to start everything with one click.
+- **🚀 One-Click Launcher**: Includes a macOS `.command` script to start everything with one click (including automatic model downloads!).
+
+> [!NOTE]
+> **First Run**: The first time you run the project, it will download the SDXL Turbo model (~7GB). Please ensure you have a stable internet connection.
 
 ## 🛠️ How It Works
 
