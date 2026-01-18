@@ -1,16 +1,22 @@
 {
     "characters": [
-        "Friendly Pirate",
-        "Space Explorer",
-        "Super Helper",
-        "Magic Wizard",
-        "Lego Buddy",
-        "Dinosaur Friend"
+        "Galactic Astronaut",
+        "Brave Medieval Knight",
+        "Magic Forest Elf",
+        "Brave Super Hero",
+        "Mystical Wizard",
+        "Cyberpunk Adventurer",
+        "Deep Sea Explorer",
+        "Wild West Sheriff"
     ],
     "places": [
-        "in a Giant Candy Land",
-        "on a Rainbow Moon",
-        "under a Sparkly Ocean",
-        "in a Toy City"
+        "on a Glowing Alien Planet",
+        "inside a Floating Crystal Palace",
+        "in a Steampunk Workshop",
+        "amidst a Field of Giant Flowers",
+        "on the Deck of a Golden Pirate Ship",
+        "at the Tip of a Snowy Mountain Peak",
+        "inside a High-Tech Spaceship",
+        "deep within an Underwater Kingdom"
     ]
 }

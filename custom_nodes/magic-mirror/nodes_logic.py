@@ -59,7 +59,7 @@ class MagicPromptBuilder:
     CATEGORY = "Magic Mirror"
 
     def build(self, character, place):
-        prompt = f"Vibrant Pixar-style 3D render of the person in the image as a {character} {place}, whimsical, friendly expression, soft cinematic lighting, colorful, highly detailed, masterpiece."
+        prompt = f"Vibrant Pixar-style 3D render of the people in the image in the theme of a {character} {place}, whimsical, friendly expressions, soft cinematic lighting, colorful, highly detailed, masterpiece."
         negative_prompt = "scary, dark, realistic, distorted, ugly, angry, mean, weapons, blood, gore, photorealistic, cinematic"
         print(f"--- Magic Mirror Brain ---\nGenerated Prompt: {prompt}\n--------------------------")
         return (prompt, negative_prompt)

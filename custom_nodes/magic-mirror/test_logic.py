@@ -23,8 +23,8 @@ class TestMagicMirrorLogic(unittest.TestCase):
         characters, places = get_magic_lists()
         self.assertIsInstance(characters, list)
         self.assertIsInstance(places, list)
-        self.assertIn("Friendly Pirate", characters)
-        self.assertIn("on a Rainbow Moon", places)
+        self.assertIn("Galactic Astronaut", characters)
+        self.assertIn("on a Glowing Alien Planet", places)
 
     def test_prompt_builder(self):
         """Tests a hypothetical prompt builder function."""
@@ -82,7 +82,8 @@ class TestMagicMirrorLogic(unittest.TestCase):
         prompt = result[0]
         negative = result[1]
         self.assertIn("Lego Buddy", prompt)
-        self.assertIn("person in the image", prompt)
+        self.assertIn("people in the image", prompt)
+        self.assertIn("theme of", prompt)
         self.assertIn("Pixar-style", prompt)
         self.assertIn("scary", negative)
 

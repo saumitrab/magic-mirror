@@ -1,8 +1,8 @@
 import json
 import os
 
-DEFAULT_CHARACTERS = ["Pirate", "Astronaut", "Superhero", "Wizard", "Lego Character"]
-DEFAULT_PLACES = ["in a Jungle", "on the Moon", "under the Ocean", "in a Cyberpunk City"]
+DEFAULT_CHARACTERS = ["Galactic Astronaut", "Brave Medieval Knight", "Magic Forest Elf", "Brave Super Hero", "Mystical Wizard"]
+DEFAULT_PLACES = ["on a Glowing Alien Planet", "inside a Floating Crystal Palace", "in a Steampunk Workshop", "amidst a Field of Giant Flowers"]
 
 def load_config():
     config_path = os.path.join(os.path.dirname(__file__), "magic_config.json")
