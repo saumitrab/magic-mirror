@@ -1,3 +1,4 @@
+# Python stuff
 __pycache__/
 *.py[cod]
 *$py.class
@@ -14,3 +15,23 @@ bin/
 lib/
 share/
 include/
+
+# ComfyUI Core (Ignore everything except our custom_nodes folder)
+*
+!custom_nodes/
+!custom_nodes/magic-mirror/
+!run_magic_mirror.command
+!setup.sh
+!README.md
+!requirements.txt
+!.gitignore
+!.git/
+
+# Standard ComfyUI ignore patterns (precautionary)
+models/
+input/
+output/
+temp/
+user/
+storage/
+*.log

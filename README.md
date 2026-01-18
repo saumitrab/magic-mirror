@@ -20,33 +20,23 @@ Magic Mirror abstracts the complex parts of AI workflows into friendly, labeled 
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- [ComfyUI](https://github.com/comfyanonymous/ComfyUI) installed.
-- Python logic dependencies:
-  ```bash
-  pip install opencv-python torch numpy
-  ```
-
 ### Installation on a New Machine
 
-1.  Navigate to your ComfyUI `custom_nodes` directory:
-    ```bash
-    cd /path/to/ComfyUI/custom_nodes
-    ```
-2.  Clone this repository:
+1.  Clone this repository:
     ```bash
     git clone <repository-url> magic-mirror
     ```
-3.  (Optional) Edit `magic_config.json` to add your own characters or places!
+2.  Navigate into the folder:
+    ```bash
+    cd magic-mirror
+    ```
+3.  **That's it!** The launcher will handle the rest.
 
 ### Running (macOS)
 
-Double-click `run_magic_mirror.command` in the project folder. This will:
-- Navigate to ComfyUI.
-- Activate your environment.
-- Start ComfyUI with optimized settings.
-- Automatically open the browser to the interface.
+Double-click `run_magic_mirror.command` in the project folder. 
+- **First time**: It will automatically download the ComfyUI core, set up a virtual environment, and install all dependencies.
+- **Subsequent times**: It will simply launch ComfyUI with optimized settings and open your browser.
 
 ## 🧠 Key Design Decisions
 

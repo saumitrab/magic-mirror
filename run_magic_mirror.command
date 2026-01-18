@@ -1,22 +1,19 @@
 #!/bin/bash
-
 # Navigate to the directory where this script is located
-cd "$(dirname "$0")"
-
-# Navigate to the ComfyUI root directory
-# Based on the current structure: /Users/saumitrabhanage/Desktop/dev/Shreenay Projects/magic-mirror
-# ComfyUI is expected at: /Users/saumitrabhanage/Desktop/dev/ComfyUI
-cd "../../ComfyUI"
+PROJECT_DIR="$(dirname "$0")"
+cd "$PROJECT_DIR"
 
 echo "--- Magic Mirror Launcher ---"
-echo "Starting ComfyUI..."
 
-# Activate the virtual environment
-if [ -f "venv/bin/activate" ]; then
-    source venv/bin/activate
-else
-    echo "Warning: venv/bin/activate not found. Attempting to run with system python."
+# 1. Automatic Setup Check
+if [ ! -f "main.py" ] || [ ! -d "venv" ]; then
+    echo "First time setup detected..."
+    bash setup.sh
 fi
+
+# 2. Start ComfyUI
+echo "Starting ComfyUI..."
+source venv/bin/activate
 
 # Launch the browser in the background after a 5 second delay
 (sleep 5; open http://127.0.0.1:8188) &
