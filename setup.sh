@@ -29,7 +29,7 @@ if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi
 # Magic Mirror Core dependencies
-pip install opencv-python torch numpy torchvision
+pip install opencv-python torch numpy torchvision gguf
 
 # 4. Install Custom Nodes
 echo "Installing custom nodes..."
