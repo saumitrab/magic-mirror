@@ -51,20 +51,28 @@ Add a **CheckpointLoaderSimple** (`Add Node > loaders`) and select the `sd_xl_tu
 
 ### 2. Add the Magic Nodes
 Right-click and find the **Magic Mirror** category. Add these nodes:
-- **Magic: The Eye 📸**: Your camera.
+- **Magic: The Eye 📸**: Your camera (outputs image and **status**).
 - **Magic: Character Selector 🎭**: Choose your costume.
 - **Magic: Place Selector 🌍**: Choose your destination.
-- **Magic: The Brain 🧠**: The logic center.
+- **Magic: The Brain 🧠**: The logic center (outputs **prompt** and **negative_prompt**).
+- **Magic: Prompt Editor ✍️**: (Optional) Sit here to see or change the AI's idea!
 - **Magic: The Painter 🎨**: The artist.
 
 ### 3. Connect the "Noodles"
-- **The Logic**: Connect Selector outputs to **The Brain** inputs.
-- **The Painter**: Connect **MODEL**, **CLIP**, and **VAE** from your Loader to **The Painter**.
-- **The Inputs**: Connect **IMAGE** from **The Eye** and **STRING** from **The Brain** to **The Painter**.
-- **The Result**: Add a **Preview Image** node and connect it to **The Painter's** output.
+- **The Brain Logic**: 
+    - Connect **Selectors** to **The Brain**.
+    - Connect **The Brain's `prompt`** to the **Prompt Editor**.
+    - Connect **The Brain's `negative_prompt`** directly to **The Painter**.
+- **The Painter**: 
+    - Connect **MODEL**, **CLIP**, and **VAE** from your Loader to **The Painter**.
+    - Connect **Prompt Editor's `prompt`** to **The Painter**.
+    - Connect **IMAGE** from **The Eye** to **The Painter**.
+- **Visual Feedback**:
+    - Add a **Preview Image** node for the final picture.
+    - (Optional) Add a "Show Text" or "Display String" node (if you have one) to **The Eye's `status`** to see when a photo is taken.
 
 ### 4. Click "Queue Prompt"
-Watch yourself transform in the preview window! 🚀
+Watch yourself transform into a friendly Pixar-style character! 🚀
 
 ## 🧠 Key Design Decisions
 
