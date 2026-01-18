@@ -16,18 +16,18 @@ lib/
 share/
 include/
 
-# ComfyUI Core (Ignore everything except our custom_nodes folder)
-*
-!custom_nodes/
-!custom_nodes/magic-mirror/
-!run_magic_mirror.command
-!setup.sh
-!README.md
-!requirements.txt
-!.gitignore
-!.git/
+# ComfyUI Core
+# We ignore everything by default to keep the repo clean
+/*
+# But we explicitly allow our project files and our specific custom node folder
+!/custom_nodes/
+!/custom_nodes/magic-mirror/
+!/run_magic_mirror.command
+!/setup.sh
+!/README.md
+!/.gitignore
 
-# Standard ComfyUI ignore patterns (precautionary)
+# Standard ComfyUI ignore patterns (precautionary for when setup.sh is run)
 models/
 input/
 output/
