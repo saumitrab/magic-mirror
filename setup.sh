@@ -48,18 +48,19 @@ UNET_FILE="$UNET_DIR/flux1-schnell-Q4_0.gguf"
 UNET_URL="https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_0.gguf"
 
 # CLIP/T5
+# CLIP/T5
 CLIP_DIR="models/clip"
-# Using FP8 T5 as it's more standard and robust for public download
+# Using verified public URLs from comfyanonymous/flux_text_encoders
 T5_FILE="$CLIP_DIR/t5xxl_fp8_e4m3fn.safetensors"
-T5_URL="https://huggingface.co/comfyanonymous/flux_all_in_one/resolve/main/t5xxl_fp8_e4m3fn.safetensors"
-CLIP_FILE="$CLIP_DIR/clip_l-Q8_0.gguf"
-CLIP_URL="https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/clip_l-Q8_0.gguf"
+T5_URL="https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors"
+CLIP_FILE="$CLIP_DIR/clip_l.safetensors"
+CLIP_URL="https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
 
 # VAE
 VAE_DIR="models/vae"
-VAE_FILE="$VAE_DIR/flux_ae.safetensors"
+VAE_FILE="$VAE_DIR/ae.safetensors"
 # Using a public mirror for VAE as the official BFL one is gated
-VAE_URL="https://huggingface.co/comfyanonymous/flux_all_in_one/resolve/main/flux_ae.safetensors"
+VAE_URL="https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/ae.safetensors"
 
 mkdir -p "$UNET_DIR" "$CLIP_DIR" "$VAE_DIR"
 

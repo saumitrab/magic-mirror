@@ -39,7 +39,7 @@
             ],
             "widgets_values": [
                 "t5xxl_fp8_e4m3fn.safetensors",
-                "clip_l-Q8_0.gguf",
+                "clip_l.safetensors",
                 "flux"
             ],
             "outputs": [
@@ -64,7 +64,7 @@
                 100
             ],
             "widgets_values": [
-                "flux_ae.safetensors"
+                "ae.safetensors"
             ],
             "outputs": [
                 {
