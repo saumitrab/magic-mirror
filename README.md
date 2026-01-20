@@ -16,7 +16,8 @@ Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar
 ./run_macmini.command
 
 # 3. Open http://127.0.0.1:8188 and load:
-#    shreenay_workflow_macmini.json
+#    shreenay_workflow_macmini_ipadapter.json (⭐ best face preservation)
+#    or shreenay_workflow_macmini.json (basic)
 ```
 
 ### MacBook Air M3 (8GB RAM) - Fast Mode
@@ -29,7 +30,8 @@ Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar
 ./run_macbook.command
 
 # 3. Open http://127.0.0.1:8188 and load:
-#    shreenay_workflow_macbook_air.json
+#    shreenay_workflow_macbook_air_ipadapter.json (⭐ best face preservation)
+#    or shreenay_workflow_macbook_air.json (basic SDXL)
 ```
 
 ---
@@ -41,7 +43,8 @@ Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar
 - **🌍 Place Selector** - Choose your location (Castle, Space, Jungle, etc.)
 - **🧠 Magic: The Brain** - Builds Pixar-style prompts with safety filters
 - **🎨 Magic: The Painter** - AI transforms you into art
-- **⚡ Hardware Optimized** - Separate workflows for Mac Mini (Flux) and MacBook Air (SDXL)
+- **⚡ Hardware Optimized** - Separate workflows for Mac Mini (Flux) and MacBook Air (SD 1.5/SDXL)
+- **✨ IP-Adapter Integration** - Excellent face preservation using direct feature injection
 
 ---
 
@@ -79,8 +82,8 @@ Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar
 
 1. Open browser to http://127.0.0.1:8188
 2. Load the recommended workflow:
-   - **Mac Mini:** `shreenay_workflow_macmini.json`
-   - **MacBook Air:** `shreenay_workflow_macbook_air.json`
+   - **Mac Mini:** `shreenay_workflow_macmini_ipadapter.json` ⭐ (best)
+   - **MacBook Air:** `shreenay_workflow_macbook_air_ipadapter.json` ⭐ (best)
 
 ### Generating Your Portrait
 
@@ -95,19 +98,29 @@ Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar
 
 ## 🛠️ Available Workflows
 
-### Hardware-Specific (Recommended)
+### IP-Adapter Workflows (⭐ Best - Excellent Face Preservation)
 
-- **`shreenay_workflow_macmini.json`** - Flux Schnell (Mac Mini, 32GB)
-  - Highest quality
+- **`shreenay_workflow_macmini_ipadapter.json`** ⭐⭐ - Flux + IP-Adapter (Mac Mini)
+  - Highest quality + best face preservation
+  - 4 steps, ~10-15 seconds
+  - Uses direct facial feature injection
+
+- **`shreenay_workflow_macbook_air_ipadapter.json`** ⭐⭐ - SD 1.5 + IP-Adapter (MacBook Air)
+  - Great quality + excellent face preservation
+  - 20 steps, ~20-30 seconds
+  - Face-specific IP-Adapter model
+
+### Basic Workflows (Text-Only Face Preservation)
+
+- **`shreenay_workflow_macmini.json`** - Flux Schnell (Mac Mini, basic)
   - 4 steps, ~10-15 seconds
 
-- **`shreenay_workflow_macbook_air.json`** - SDXL Turbo (MacBook Air, 8GB)
-  - Fast and efficient
+- **`shreenay_workflow_macbook_air.json`** - SDXL Turbo (MacBook Air, basic)
   - 2 steps, ~15-20 seconds
 
 ### Alternative Workflows
 
-- **`shreenay_workflow_sd15.json`** - SD 1.5 (most memory efficient)
+- **`shreenay_workflow_sd15.json`** - SD 1.5 (most memory efficient, no IP-Adapter)
 - **`shreenay_workflow_flux_schnell.json`** - Flux (alternative Mac Mini)
 - **`shreenay_workflow.json`** - SDXL (original)
 

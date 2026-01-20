@@ -35,7 +35,9 @@ custom_nodes/*
 !/shreenay_workflow.json
 !/shreenay_workflow_flux_schnell.json
 !/shreenay_workflow_macmini.json
+!/shreenay_workflow_macmini_ipadapter.json
 !/shreenay_workflow_macbook_air.json
+!/shreenay_workflow_macbook_air_ipadapter.json
 !/shreenay_workflow_sd15.json
 !/flux_schnell_mirror_workflow.json
 !/requirements.txt

@@ -1,0 +1,313 @@
+{
+  "id": "shreenay-macbook-air-ipadapter",
+  "revision": 0,
+  "last_node_id": 12,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [100, 100],
+      "size": [300, 100],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [1]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [2]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [3]
+        }
+      ],
+      "properties": {"Node name for S&R": "CheckpointLoaderSimple"},
+      "widgets_values": ["realisticVisionV51_v51VAE.safetensors"]
+    },
+    {
+      "id": 2,
+      "type": "MagicWebcam",
+      "pos": [500, 50],
+      "size": [300, 102],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [6, 10]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {"Node name for S&R": "MagicWebcam"},
+      "widgets_values": [0, true]
+    },
+    {
+      "id": 4,
+      "type": "MagicCharacterSelector",
+      "pos": [500, 250],
+      "size": [300, 60],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [4]
+        }
+      ],
+      "properties": {"Node name for S&R": "MagicCharacterSelector"},
+      "widgets_values": ["Space Explorer"]
+    },
+    {
+      "id": 5,
+      "type": "MagicPlaceSelector",
+      "pos": [500, 350],
+      "size": [300, 60],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [5]
+        }
+      ],
+      "properties": {"Node name for S&R": "MagicPlaceSelector"},
+      "widgets_values": ["in a Magical Castle"]
+    },
+    {
+      "id": 6,
+      "type": "MagicPromptBuilder",
+      "pos": [850, 250],
+      "size": [300, 120],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "character",
+          "type": "STRING",
+          "link": 4
+        },
+        {
+          "name": "place",
+          "type": "STRING",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "links": [7]
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "links": [9]
+        }
+      ],
+      "properties": {"Node name for S&R": "MagicPromptBuilder"},
+      "widgets_values": []
+    },
+    {
+      "id": 10,
+      "type": "IPAdapterModelLoader",
+      "pos": [100, 250],
+      "size": [300, 60],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IPADAPTER",
+          "type": "IPADAPTER",
+          "links": [11]
+        }
+      ],
+      "properties": {"Node name for S&R": "IPAdapterModelLoader"},
+      "widgets_values": ["ip-adapter-plus-face_sd15.bin"],
+      "title": "🎭 IP-Adapter Model (SD 1.5)"
+    },
+    {
+      "id": 11,
+      "type": "CLIPVisionLoader",
+      "pos": [100, 350],
+      "size": [300, 60],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [12]
+        }
+      ],
+      "properties": {"Node name for S&R": "CLIPVisionLoader"},
+      "widgets_values": ["CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"],
+      "title": "👁️ CLIP Vision Encoder"
+    },
+    {
+      "id": 9,
+      "type": "IPAdapterApply",
+      "pos": [850, 100],
+      "size": [300, 150],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": 11
+        },
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 12
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [13]
+        }
+      ],
+      "properties": {"Node name for S&R": "IPAdapterApply"},
+      "widgets_values": [1.0, 0.0, "original", 0.0, 1.0, false],
+      "title": "✨ Apply Face Features"
+    },
+    {
+      "id": 7,
+      "type": "MagicPainterWrapper",
+      "pos": [1200, 150],
+      "size": [300, 450],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 13
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 3
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 6
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 7
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [8]
+        }
+      ],
+      "properties": {"Node name for S&R": "MagicPainterWrapper"},
+      "widgets_values": [20, 7.0, 0.8, 42, "randomize", "euler_a", "karras"],
+      "title": "🎨 The Painter (SD 1.5 + Face Preservation)"
+    },
+    {
+      "id": 8,
+      "type": "PreviewImage",
+      "pos": [1550, 200],
+      "size": [400, 400],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [],
+      "properties": {"Node name for S&R": "PreviewImage"},
+      "widgets_values": [],
+      "title": "✨ Your Magic Portrait"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 9, 3, "MODEL"],
+    [2, 1, 1, 7, 2, "CLIP"],
+    [3, 1, 2, 7, 1, "VAE"],
+    [4, 4, 0, 6, 0, "STRING"],
+    [5, 5, 0, 6, 1, "STRING"],
+    [6, 2, 0, 7, 3, "IMAGE"],
+    [7, 6, 0, 7, 4, "STRING"],
+    [8, 7, 0, 8, 0, "IMAGE"],
+    [9, 6, 1, 7, 5, "STRING"],
+    [10, 2, 0, 9, 2, "IMAGE"],
+    [11, 10, 0, 9, 0, "IPADAPTER"],
+    [12, 11, 0, 9, 1, "CLIP_VISION"],
+    [13, 9, 0, 7, 0, "MODEL"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflowRendererVersion": "LG",
+    "ds": {
+      "scale": 0.75,
+      "offset": [150, 200]
+    },
+    "frontendVersion": "1.36.14",
+    "workflow_notes": "MacBook Air M3 (8GB) - SD 1.5 + IP-Adapter Face for Face Preservation\n\nThis workflow uses:\n- Realistic Vision v5.1 (SD 1.5) for memory efficiency\n- IP-Adapter Plus Face to extract and inject facial features\n- Result: Much better face resemblance than text-only prompts\n\nSettings optimized for 8GB RAM:\n- Steps: 20 (SD 1.5 needs more steps than Flux)\n- Guidance: 7.0\n- IP-Adapter weight: 1.0 (adjust 0.7-1.2 for face strength)"
+  },
+  "version": 0.4
+}

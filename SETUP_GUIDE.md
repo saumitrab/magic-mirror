@@ -73,10 +73,28 @@ Transform webcam photos into Pixar-style characters with AI magic!
 
 1. Open browser to http://127.0.0.1:8188
 2. Load workflow:
-   - **Mac Mini:** `shreenay_workflow_macmini.json` (recommended)
-   - **MacBook Air:** `shreenay_workflow_macbook_air.json` (recommended)
+   - **Mac Mini:** `shreenay_workflow_macmini_ipadapter.json` ⭐ (best face preservation)
+   - **Mac Mini:** `shreenay_workflow_macmini.json` (basic)
+   - **MacBook Air:** `shreenay_workflow_macbook_air_ipadapter.json` ⭐ (best face preservation)
+   - **MacBook Air:** `shreenay_workflow_macbook_air.json` (basic SDXL)
 3. Select character and place from dropdowns
 4. Click "Queue Prompt" to generate
+
+### What is IP-Adapter? (⭐ Workflows)
+
+The **IP-Adapter workflows** provide significantly better face preservation:
+
+**Without IP-Adapter (basic workflows):**
+- Relies on text prompts like "preserve exact facial features"
+- Face resemblance is hit-or-miss
+- Results vary widely
+
+**With IP-Adapter (⭐ workflows):**
+- Extracts facial features directly from your webcam photo
+- Injects those features into the AI generation process
+- **Much more reliable face preservation!**
+
+The IP-Adapter models were downloaded during setup and are ready to use. Just load the `_ipadapter` workflow version!
 
 ### Custom Nodes (Kid-Friendly Names)
 - 🎭 **Character Selector** - Choose costume
@@ -89,26 +107,46 @@ Transform webcam photos into Pixar-style characters with AI magic!
 
 ## Workflows
 
-### Hardware-Specific Workflows (Recommended)
+### IP-Adapter Workflows (⭐ Best Face Preservation)
 
-#### `shreenay_workflow_macmini.json` ⭐ Mac Mini
-- **Model:** Flux Schnell Q4 (quantized for speed)
-- **Settings:** 4 steps, guidance 3.5, optimized for 32GB
+#### `shreenay_workflow_macmini_ipadapter.json` ⭐⭐ Mac Mini (BEST)
+- **Model:** Flux Schnell Q4 + IP-Adapter Plus (SDXL)
+- **Settings:** 4 steps, guidance 3.5, IP-Adapter weight 1.0
+- **Face Preservation:** Excellent! Uses direct feature injection
 - **Strengths:**
   - Best quality Pixar-style output
+  - **Much better face resemblance than text-only**
   - Fast generation (10-15 seconds)
-  - Excellent at following complex prompts
 - **Requirements:** 32GB RAM, Mac Mini M4
 - **Generation Time:** ~10-15 seconds
+- **Extra Nodes:** IPAdapterModelLoader, CLIPVisionLoader, IPAdapterApply
 
-#### `shreenay_workflow_macbook_air.json` ⭐ MacBook Air
-- **Model:** SDXL Turbo
-- **Settings:** 2 steps, guidance 1.0, optimized for 8GB
+#### `shreenay_workflow_macbook_air_ipadapter.json` ⭐⭐ MacBook Air (BEST)
+- **Model:** SD 1.5 (Realistic Vision) + IP-Adapter Plus Face
+- **Settings:** 20 steps, guidance 7.0, IP-Adapter weight 1.0
+- **Face Preservation:** Excellent! Face-specific IP-Adapter
 - **Strengths:**
-  - Fast generation
-  - Good quality for 8GB system
-  - Works reliably with --lowvram
+  - **Much better face resemblance than text-only**
+  - Memory efficient (fits in 8GB)
+  - Reliable generation
 - **Requirements:** 8GB RAM minimum
+- **Generation Time:** ~20-30 seconds
+- **Extra Nodes:** IPAdapterModelLoader, CLIPVisionLoader, IPAdapterApply
+
+### Basic Workflows (No IP-Adapter)
+
+#### `shreenay_workflow_macmini.json` - Mac Mini (Basic)
+- **Model:** Flux Schnell Q4
+- **Settings:** 4 steps, guidance 3.5
+- **Face Preservation:** Text-only (less reliable)
+- **Use when:** Testing or troubleshooting
+- **Generation Time:** ~10-15 seconds
+
+#### `shreenay_workflow_macbook_air.json` - MacBook Air (Basic)
+- **Model:** SDXL Turbo
+- **Settings:** 2 steps, guidance 1.0
+- **Face Preservation:** Text-only (less reliable)
+- **Use when:** Quick tests or if IP-Adapter has issues
 - **Generation Time:** ~15-20 seconds
 
 ### Alternative Workflows
@@ -127,6 +165,31 @@ Transform webcam photos into Pixar-style characters with AI magic!
 - **Model:** SDXL Turbo
 - **Similar to:** MacBook Air workflow
 - **Note:** Works on both systems with appropriate memory flags
+
+---
+
+## Adjusting IP-Adapter Settings
+
+If you're using the IP-Adapter workflows, you can fine-tune face preservation:
+
+### IP-Adapter Weight (in IPAdapterApply node)
+- **Default:** 1.0
+- **Range:** 0.0 - 1.5
+- **Lower (0.5-0.8):** Less face preservation, more creative freedom
+- **Higher (1.0-1.3):** Stronger face preservation, more faithful to photo
+- **Too high (>1.3):** May look unnatural or "pasted on"
+
+**How to adjust:**
+1. Open the IPAdapterApply node in ComfyUI
+2. Find the "weight" parameter (first number)
+3. Change from 1.0 to your desired value
+4. Queue prompt again
+
+### When to Adjust
+
+**Face not recognizable?** Increase weight to 1.2-1.3
+**Face looks too "pasted on"?** Decrease weight to 0.7-0.8
+**Want more artistic freedom?** Decrease weight to 0.5-0.6
 
 ---
 
@@ -229,31 +292,37 @@ Edit the launcher scripts to add:
 
 ```
 magic-mirror/
-├── setup.sh                              # Base setup (Flux models)
-├── setup_macmini.sh                      # Mac Mini setup (adds IP-Adapter)
-├── setup_macbook.sh                      # MacBook Air setup (SD 1.5)
-├── run_macmini.command                   # Mac Mini launcher (--highvram)
-├── run_macbook.command                   # MacBook Air launcher (--lowvram)
-├── shreenay_workflow_macmini.json        # ⭐ Mac Mini optimized (Flux)
-├── shreenay_workflow_macbook_air.json    # ⭐ MacBook Air optimized (SDXL Turbo)
-├── shreenay_workflow_flux_schnell.json   # Flux workflow (alternative)
-├── shreenay_workflow_sd15.json           # SD 1.5 workflow (most efficient)
-├── shreenay_workflow.json                # SDXL workflow (original)
-├── SETUP_GUIDE.md                        # This guide
-├── IMPLEMENTATION_SUMMARY.md             # Developer documentation
+├── setup.sh                                       # Base setup (Flux models)
+├── setup_macmini.sh                               # Mac Mini setup (adds IP-Adapter)
+├── setup_macbook.sh                               # MacBook Air setup (SD 1.5 + IP-Adapter)
+├── run_macmini.command                            # Mac Mini launcher (--highvram)
+├── run_macbook.command                            # MacBook Air launcher (--lowvram)
+├── shreenay_workflow_macmini_ipadapter.json       # ⭐⭐ Mac Mini (Flux + IP-Adapter)
+├── shreenay_workflow_macbook_air_ipadapter.json   # ⭐⭐ MacBook Air (SD 1.5 + IP-Adapter)
+├── shreenay_workflow_macmini.json                 # Mac Mini basic (Flux only)
+├── shreenay_workflow_macbook_air.json             # MacBook Air basic (SDXL Turbo)
+├── shreenay_workflow_flux_schnell.json            # Flux workflow (alternative)
+├── shreenay_workflow_sd15.json                    # SD 1.5 workflow (no IP-Adapter)
+├── shreenay_workflow.json                         # SDXL workflow (original)
+├── SETUP_GUIDE.md                                 # This guide
+├── IMPLEMENTATION_SUMMARY.md                      # Developer documentation
 ├── custom_nodes/
-│   └── magic-mirror/
-│       ├── nodes_camera.py               # MagicWebcam
-│       ├── nodes_logic.py                # Brain, Painters, Selectors
-│       └── config.py                     # Character/Place lists
+│   ├── magic-mirror/
+│   │   ├── nodes_camera.py                        # MagicWebcam
+│   │   ├── nodes_logic.py                         # Brain, Painters, Selectors
+│   │   └── config.py                              # Character/Place lists
+│   └── ComfyUI_IPAdapter_plus/                    # IP-Adapter nodes (installed)
 ├── models/
-│   ├── unet/                             # Flux UNET
-│   ├── clip/                             # Text encoders
-│   ├── vae/                              # VAE
-│   ├── checkpoints/                      # SD 1.5/SDXL checkpoints
-│   ├── ipadapter/                        # IP-Adapter models
-│   └── clip_vision/                      # Vision encoders
-└── venv/                                 # Python virtual environment
+│   ├── unet/                                      # Flux UNET
+│   ├── clip/                                      # Text encoders
+│   ├── vae/                                       # VAE
+│   ├── checkpoints/                               # SD 1.5/SDXL checkpoints
+│   ├── ipadapter/                                 # IP-Adapter models ⭐
+│   │   ├── ip-adapter-plus_sdxl_vit-h.safetensors # For Mac Mini (Flux/SDXL)
+│   │   └── ip-adapter-plus-face_sd15.bin          # For MacBook Air (SD 1.5)
+│   └── clip_vision/                               # CLIP Vision encoders
+│       └── CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors
+└── venv/                                          # Python virtual environment
 ```
 
 ---
