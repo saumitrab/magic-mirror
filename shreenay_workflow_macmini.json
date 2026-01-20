@@ -1,8 +1,8 @@
 {
-  "id": "shreenay-flux-schnell",
+  "id": "shreenay-macmini-optimized",
   "revision": 0,
   "last_node_id": 9,
-  "last_link_id": 0,
+  "last_link_id": 9,
   "nodes": [
     {
       "id": 1,
@@ -36,6 +36,39 @@
       ]
     },
     {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [
+        100,
+        250
+      ],
+      "size": [
+        300,
+        150
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp8_e4m3fn.safetensors",
+        "clip_l.safetensors",
+        "flux"
+      ]
+    },
+    {
       "id": 3,
       "type": "VAELoader",
       "pos": [
@@ -47,7 +80,7 @@
         100
       ],
       "flags": {},
-      "order": 1,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -64,6 +97,105 @@
       },
       "widgets_values": [
         "ae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MagicWebcam",
+      "pos": [
+        500,
+        50
+      ],
+      "size": [
+        300,
+        102
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicWebcam"
+      },
+      "widgets_values": [
+        0,
+        true
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MagicCharacterSelector",
+      "pos": [
+        500,
+        250
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicCharacterSelector"
+      },
+      "widgets_values": [
+        "Brave Medieval Knight"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "MagicPlaceSelector",
+      "pos": [
+        500,
+        350
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicPlaceSelector"
+      },
+      "widgets_values": [
+        "on a Glowing Alien Planet"
       ]
     },
     {
@@ -103,174 +235,13 @@
         {
           "name": "negative_prompt",
           "type": "STRING",
-          "links": [
-            8
-          ]
+          "links": null
         }
       ],
       "properties": {
         "Node name for S&R": "MagicPromptBuilder"
       },
       "widgets_values": []
-    },
-    {
-      "id": 9,
-      "type": "PreviewImage",
-      "pos": [
-        1550,
-        200
-      ],
-      "size": [
-        400,
-        400
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 4,
-      "type": "MagicWebcam",
-      "pos": [
-        498.5447692871094,
-        -55.61457316080728
-      ],
-      "size": [
-        300,
-        102
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            4
-          ]
-        },
-        {
-          "name": "status",
-          "type": "STRING",
-          "links": null
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MagicWebcam"
-      },
-      "widgets_values": [
-        0,
-        true
-      ]
-    },
-    {
-      "id": 5,
-      "type": "MagicCharacterSelector",
-      "pos": [
-        500,
-        250
-      ],
-      "size": [
-        300,
-        60
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            5
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MagicCharacterSelector"
-      },
-      "widgets_values": [
-        "Brave Medieval Knight"
-      ]
-    },
-    {
-      "id": 6,
-      "type": "MagicPlaceSelector",
-      "pos": [
-        500,
-        350
-      ],
-      "size": [
-        300,
-        60
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MagicPlaceSelector"
-      },
-      "widgets_values": [
-        "on a Glowing Alien Planet"
-      ]
-    },
-    {
-      "id": 2,
-      "type": "DualCLIPLoader",
-      "pos": [
-        100,
-        250
-      ],
-      "size": [
-        300,
-        150
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            2
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "DualCLIPLoader"
-      },
-      "widgets_values": [
-        "t5xxl_fp8_e4m3fn.safetensors",
-        "clip_l.safetensors",
-        "flux"
-      ]
     },
     {
       "id": 8,
@@ -332,7 +303,36 @@
         42,
         "euler",
         "simple"
-      ]
+      ],
+      "title": "🎨 The Painter (Flux - High Quality)"
+    },
+    {
+      "id": 9,
+      "type": "PreviewImage",
+      "pos": [
+        1550,
+        200
+      ],
+      "size": [
+        400,
+        400
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": [],
+      "title": "✨ Your Magic Portrait"
     }
   ],
   "links": [
@@ -406,13 +406,14 @@
   "extra": {
     "workflowRendererVersion": "LG",
     "ds": {
-      "scale": 0.8213903743315508,
+      "scale": 0.8,
       "offset": [
-        221.66666666666674,
-        248.15755208333337
+        200,
+        250
       ]
     },
-    "frontendVersion": "1.36.14"
+    "frontendVersion": "1.36.14",
+    "workflow_notes": "Optimized for Mac Mini M4 (32GB RAM) - Flux Schnell Q4 - High Quality Mode"
   },
   "version": 0.4
 }

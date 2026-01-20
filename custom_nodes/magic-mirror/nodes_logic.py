@@ -146,6 +146,65 @@ class MagicPainterWrapper:
 
         return (pixels,)
 
+class MagicPainterFlux:
+    """Flux-specific painter that handles Flux's unique requirements"""
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "model": ("MODEL",),
+                "vae": ("VAE",),
+                "clip": ("CLIP",),
+                "image": ("IMAGE",),
+                "prompt": ("STRING", {"forceInput": True}),
+                "steps": ("INT", {"default": 4, "min": 1, "max": 50}),
+                "guidance": ("FLOAT", {"default": 3.5, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "denoise": ("FLOAT", {"default": 0.75, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                "sampler_name": (["euler", "heun", "dpmpp_2m"], {"default": "euler"}),
+                "scheduler": (["simple", "beta"], {"default": "simple"}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+    FUNCTION = "paint"
+    CATEGORY = "Magic Mirror"
+
+    def paint(self, model, vae, clip, image, prompt, steps, guidance, denoise, seed, sampler_name, scheduler):
+        # 1. Apply ModelSamplingFlux for proper Flux guidance handling
+        try:
+            # Try to import and use ModelSamplingFlux
+            sampling_flux = nodes.ModelSamplingFlux()
+            model_patched = sampling_flux.patch(model, max_shift=1.15, base_shift=0.5, width=1024, height=1024)[0]
+        except (AttributeError, ImportError):
+            # Fallback if ModelSamplingFlux not available
+            print("Warning: ModelSamplingFlux not available, using model as-is")
+            model_patched = model
+
+        # 2. Encode Text (CLIPTextEncode) - Flux uses SINGLE conditioning (no negative)
+        encoder = nodes.CLIPTextEncode()
+        conditioning = encoder.encode(clip, prompt)[0]
+
+        # 3. Encode Image (VAEEncode)
+        vae_encoder = nodes.VAEEncode()
+        latent = vae_encoder.encode(vae, image)[0]
+
+        # 4. Sample with Flux-compatible settings
+        sampler = nodes.KSampler()
+
+        # For Flux, we use the same conditioning for both positive and negative
+        # Flux Schnell ignores negative prompts, so we just pass the positive twice
+        samples = sampler.sample(
+            model_patched, seed, steps, guidance, sampler_name, scheduler,
+            conditioning, conditioning, latent, denoise=denoise
+        )[0]
+
+        # 5. Decode (VAEDecode)
+        vae_decoder = nodes.VAEDecode()
+        pixels = vae_decoder.decode(vae, samples)[0]
+
+        return (pixels,)
+
 class MagicStatusDisplay:
     @classmethod
     def INPUT_TYPES(s):
@@ -174,6 +233,7 @@ NODE_CLASS_MAPPINGS = {
     "MagicPromptBuilder": MagicPromptBuilder,
     "MagicPromptEditor": MagicPromptEditor,
     "MagicPainterWrapper": MagicPainterWrapper,
+    "MagicPainterFlux": MagicPainterFlux,
     "MagicStatusDisplay": MagicStatusDisplay
 }
 
@@ -183,5 +243,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MagicPromptBuilder": "Magic: The Brain 🧠",
     "MagicPromptEditor": "Magic: Prompt Editor ✍️",
     "MagicPainterWrapper": "Magic: The Painter 🎨",
+    "MagicPainterFlux": "Magic: The Flux Painter ✨",
     "MagicStatusDisplay": "Magic: Status Display 💬"
 }

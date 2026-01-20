@@ -1,12 +1,12 @@
 {
-  "id": "shreenay-flux-schnell",
+  "id": "shreenay-sd15-macbook",
   "revision": 0,
-  "last_node_id": 9,
-  "last_link_id": 0,
+  "last_node_id": 8,
+  "last_link_id": 8,
   "nodes": [
     {
       "id": 1,
-      "type": "UnetLoaderGGUF",
+      "type": "CheckpointLoaderSimple",
       "pos": [
         100,
         100
@@ -26,31 +26,14 @@
           "links": [
             1
           ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UnetLoaderGGUF"
-      },
-      "widgets_values": [
-        "flux1-schnell-Q4_0.gguf"
-      ]
-    },
-    {
-      "id": 3,
-      "type": "VAELoader",
-      "pos": [
-        100,
-        450
-      ],
-      "size": [
-        300,
-        100
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            2
+          ]
+        },
         {
           "name": "VAE",
           "type": "VAE",
@@ -60,99 +43,25 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "VAELoader"
+        "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "ae.safetensors"
+        "realisticVisionV51_v51VAE.safetensors"
       ]
     },
     {
-      "id": 7,
-      "type": "MagicPromptBuilder",
-      "pos": [
-        850,
-        250
-      ],
-      "size": [
-        300,
-        120
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "character",
-          "type": "STRING",
-          "link": 5
-        },
-        {
-          "name": "place",
-          "type": "STRING",
-          "link": 6
-        }
-      ],
-      "outputs": [
-        {
-          "name": "prompt",
-          "type": "STRING",
-          "links": [
-            7
-          ]
-        },
-        {
-          "name": "negative_prompt",
-          "type": "STRING",
-          "links": [
-            8
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MagicPromptBuilder"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 9,
-      "type": "PreviewImage",
-      "pos": [
-        1550,
-        200
-      ],
-      "size": [
-        400,
-        400
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 4,
+      "id": 2,
       "type": "MagicWebcam",
       "pos": [
-        498.5447692871094,
-        -55.61457316080728
+        500,
+        50
       ],
       "size": [
         300,
         102
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -160,7 +69,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            4
+            6
           ]
         },
         {
@@ -178,11 +87,42 @@
       ]
     },
     {
-      "id": 5,
+      "id": 4,
       "type": "MagicCharacterSelector",
       "pos": [
         500,
         250
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MagicCharacterSelector"
+      },
+      "widgets_values": [
+        "Brave Medieval Knight"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MagicPlaceSelector",
+      "pos": [
+        500,
+        350
       ],
       "size": [
         300,
@@ -202,89 +142,72 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "MagicCharacterSelector"
+        "Node name for S&R": "MagicPlaceSelector"
       },
       "widgets_values": [
-        "Brave Medieval Knight"
+        "in a Magical Castle"
       ]
     },
     {
       "id": 6,
-      "type": "MagicPlaceSelector",
+      "type": "MagicPromptBuilder",
       "pos": [
-        500,
-        350
-      ],
-      "size": [
-        300,
-        60
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MagicPlaceSelector"
-      },
-      "widgets_values": [
-        "on a Glowing Alien Planet"
-      ]
-    },
-    {
-      "id": 2,
-      "type": "DualCLIPLoader",
-      "pos": [
-        100,
+        850,
         250
       ],
       "size": [
         300,
-        150
+        120
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "character",
+          "type": "STRING",
+          "link": 4
+        },
+        {
+          "name": "place",
+          "type": "STRING",
+          "link": 5
+        }
+      ],
       "outputs": [
         {
-          "name": "CLIP",
-          "type": "CLIP",
+          "name": "prompt",
+          "type": "STRING",
           "links": [
-            2
+            7
+          ]
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "links": [
+            9
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "DualCLIPLoader"
+        "Node name for S&R": "MagicPromptBuilder"
       },
-      "widgets_values": [
-        "t5xxl_fp8_e4m3fn.safetensors",
-        "clip_l.safetensors",
-        "flux"
-      ]
+      "widgets_values": []
     },
     {
-      "id": 8,
-      "type": "MagicPainterFlux",
+      "id": 7,
+      "type": "MagicPainterWrapper",
       "pos": [
         1200,
         150
       ],
       "size": [
         300,
-        400
+        450
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -305,12 +228,17 @@
         {
           "name": "image",
           "type": "IMAGE",
-          "link": 4
+          "link": 6
         },
         {
           "name": "prompt",
           "type": "STRING",
           "link": 7
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "link": 9
         }
       ],
       "outputs": [
@@ -318,21 +246,48 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            9
+            8
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "MagicPainterFlux"
+        "Node name for S&R": "MagicPainterWrapper"
       },
       "widgets_values": [
-        4,
-        3.5,
-        0.75,
+        20,
+        7.0,
+        0.8,
         42,
-        "euler",
-        "simple"
+        "euler_a",
+        "karras"
       ]
+    },
+    {
+      "id": 8,
+      "type": "PreviewImage",
+      "pos": [
+        1550,
+        200
+      ],
+      "size": [
+        400,
+        400
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
     }
   ],
   "links": [
@@ -340,23 +295,23 @@
       1,
       1,
       0,
-      8,
+      7,
       0,
       "MODEL"
     ],
     [
       2,
-      2,
-      0,
-      8,
+      1,
+      1,
+      7,
       2,
       "CLIP"
     ],
     [
       3,
-      3,
-      0,
-      8,
+      1,
+      2,
+      7,
       1,
       "VAE"
     ],
@@ -364,41 +319,49 @@
       4,
       4,
       0,
-      8,
-      3,
-      "IMAGE"
-    ],
-    [
-      5,
-      5,
-      0,
-      7,
+      6,
       0,
       "STRING"
     ],
     [
-      6,
-      6,
+      5,
+      5,
       0,
-      7,
+      6,
       1,
       "STRING"
     ],
     [
-      7,
-      7,
+      6,
+      2,
       0,
-      8,
+      7,
+      3,
+      "IMAGE"
+    ],
+    [
+      7,
+      6,
+      0,
+      7,
       4,
       "STRING"
     ],
     [
-      9,
+      8,
+      7,
+      0,
       8,
       0,
-      9,
-      0,
       "IMAGE"
+    ],
+    [
+      9,
+      6,
+      1,
+      7,
+      5,
+      "STRING"
     ]
   ],
   "groups": [],
@@ -406,10 +369,10 @@
   "extra": {
     "workflowRendererVersion": "LG",
     "ds": {
-      "scale": 0.8213903743315508,
+      "scale": 0.8,
       "offset": [
-        221.66666666666674,
-        248.15755208333337
+        200,
+        250
       ]
     },
     "frontendVersion": "1.36.14"

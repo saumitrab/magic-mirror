@@ -69,27 +69,58 @@ download_model() {
     local url=$1
     local file=$2
     local name=$3
-    
+    local min_size=$4  # Minimum expected file size in bytes
+
     # Delete if file is suspiciously small (likely error page or corrupted)
     if [ -f "$file" ]; then
         local size=$(wc -c < "$file")
         if [ $size -lt 1000000 ]; then
-            echo "Removing corrupted/small file: $file"
+            echo "⚠️  Removing corrupted/small file: $file ($size bytes)"
             rm "$file"
         fi
     fi
 
     if [ ! -f "$file" ]; then
-        echo "Downloading $name (~$(echo $name | grep -q UNET && echo "7GB" || echo "300MB-5GB"))..."
-        curl -L "$url" -o "$file"
+        echo "Downloading $name..."
+        curl -L --fail --progress-bar "$url" -o "$file"
+
+        # Verify download succeeded
+        if [ $? -ne 0 ]; then
+            echo "❌ Download failed for $name"
+            rm -f "$file"
+            return 1
+        fi
+
+        # Check if file is HTML error page
+        if file "$file" | grep -q "HTML"; then
+            echo "❌ Downloaded file is HTML (likely error page), not a model file"
+            rm "$file"
+            return 1
+        fi
+
+        # Check minimum size if provided
+        if [ -n "$min_size" ]; then
+            local downloaded_size=$(wc -c < "$file")
+            if [ $downloaded_size -lt $min_size ]; then
+                echo "❌ Downloaded file too small ($downloaded_size bytes, expected at least $min_size bytes)"
+                rm "$file"
+                return 1
+            fi
+        fi
+
+        echo "✅ Successfully downloaded $name"
     else
-        echo "$name already present."
+        echo "✓ $name already present."
     fi
+
+    return 0
 }
 
-download_model "$UNET_URL" "$UNET_FILE" "Flux Schnell UNET"
-download_model "$T5_URL" "$T5_FILE" "T5 Encoder"
-download_model "$CLIP_URL" "$CLIP_FILE" "CLIP-L GGUF"
-download_model "$VAE_URL" "$VAE_FILE" "Flux VAE"
+# Download models with size verification (sizes in bytes)
+# UNET: ~7GB, T5: ~4.5GB, CLIP: ~200MB, VAE: ~300MB
+download_model "$UNET_URL" "$UNET_FILE" "Flux Schnell UNET" 5000000000     # 5GB min
+download_model "$T5_URL" "$T5_FILE" "T5 Encoder" 3000000000                # 3GB min
+download_model "$CLIP_URL" "$CLIP_FILE" "CLIP-L" 100000000                 # 100MB min
+download_model "$VAE_URL" "$VAE_FILE" "Flux VAE" 200000000                 # 200MB min
 
 echo "Setup complete!"

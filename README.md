@@ -1,135 +1,280 @@
-# 🪞 Magic Mirror: Educational ComfyUI Node Pack
+# 🪞 Magic Mirror: Transform into Pixar Characters!
 
-Magic Mirror is a collection of custom ComfyUI nodes designed to be simple, interactive, and fun for children (specifically optimized for a 6-year-old!). It allows users to capture their image via webcam and transform themselves into various characters and places using AI.
+Magic Mirror is a ComfyUI-based project that transforms webcam photos into Pixar-style characters. Designed to be simple and fun for kids (optimized for 6-year-olds!).
+
+---
+
+## 🚀 Quick Start
+
+### Mac Mini M4 (32GB RAM) - High Quality Mode
+
+```bash
+# 1. Setup (first time only - downloads ~15GB)
+./setup_macmini.sh
+
+# 2. Start Magic Mirror
+./run_macmini.command
+
+# 3. Open http://127.0.0.1:8188 and load:
+#    shreenay_workflow_macmini.json
+```
+
+### MacBook Air M3 (8GB RAM) - Fast Mode
+
+```bash
+# 1. Setup (first time only - downloads ~10GB)
+./setup_macbook.sh
+
+# 2. Start Magic Mirror
+./run_macbook.command
+
+# 3. Open http://127.0.0.1:8188 and load:
+#    shreenay_workflow_macbook_air.json
+```
+
+---
 
 ## ✨ Features
 
-- **📸 Magic: The Eye**: A robust webcam capture node with real-time status feedback.
-- **🧠 Magic: The Brain**: A Pixar-style prompt builder that ensures kid-friendly results with built-in safety filters.
-- **✍️ Magic: Prompt Editor**: A new node that lets you see and manually edit the prompt before painting.
-- **🎨 Magic: The Painter**: Now includes negative-prompt support to keep results clean and fun.
-- **🎭 Customizable**: Characters and places are easily editable via a JSON configuration file.
-- **🚀 One-Click Launcher**: Includes a macOS `.command` script to start everything with one click (including automatic model downloads!).
+- **📸 Magic: The Eye** - Webcam capture with real-time status
+- **🎭 Character Selector** - Choose your costume (Knight, Pirate, Astronaut, etc.)
+- **🌍 Place Selector** - Choose your location (Castle, Space, Jungle, etc.)
+- **🧠 Magic: The Brain** - Builds Pixar-style prompts with safety filters
+- **🎨 Magic: The Painter** - AI transforms you into art
+- **⚡ Hardware Optimized** - Separate workflows for Mac Mini (Flux) and MacBook Air (SDXL)
 
-> [!IMPORTANT]
-> **Flux Schnell Upgrade**: This version uses Flux.1 Schnell GGUF, optimized for MacBook Air memory (16-24GB RAM).
-> 1. Close all other apps (browsers, Slack, etc.) to free up Unified Memory.
-> 2. The first capture may take 1-5 minutes as the model loads into RAM.
+---
 
-## 🛠️ How It Works
+## 🎨 How It Works
 
-Magic Mirror abstracts the complex parts of AI workflows into friendly, labeled components:
+1. **The Eye** captures your webcam photo
+2. **Selectors** let you pick character and place
+3. **The Brain** creates a magical Pixar-style prompt
+4. **The Painter** transforms you using AI
+5. See yourself as a Pixar character in 10-20 seconds!
 
-1.  **The Input (The Eye)**: Captures a live frame from your webcam.
-2.  **The Logic (The Brain)**: You select a **Character** (e.g., Pirate, Astronaut) and a **Place** (e.g., on the Moon). The "Brain" builds a cinematic prompt like: *"Close up portrait of a Pirate on the Moon, cinematic lighting..."*
-3.  **The Creation (The Painter)**: The Painter takes your webcam photo and the Brain's prompt, then "paints" your transformation using **Flux.1 Schnell**, a high-quality model designed for few-step generation on local hardware.
+---
 
-## 🚀 Getting Started
+## 📦 What Gets Installed
 
-### Installation on a New Machine
+### Mac Mini Setup
+- Flux Schnell Q4 (~7GB) - Highest quality
+- Text encoders (~5GB)
+- IP-Adapter support (~3GB)
+- ComfyUI core and custom nodes
+- **Total:** ~15GB
 
-1.  Clone this repository:
-    ```bash
-    git clone <repository-url> magic-mirror
-    ```
-2.  Navigate into the folder:
-    ```bash
-    cd magic-mirror
-    ```
-3.  **That's it!** The launcher will handle the rest.
+### MacBook Air Setup
+- SDXL Turbo (~6GB) - Fast and efficient
+- OR SD 1.5 (~4GB) - Most memory efficient
+- IP-Adapter support (~2GB)
+- ComfyUI core and custom nodes
+- **Total:** ~6-10GB
 
-### Running (macOS)
+---
 
-Double-click `run_magic_mirror.command` in the project folder. 
-- **First time**: It will automatically download the ComfyUI core, set up a virtual environment, and install all dependencies.
-- **Subsequent times**: It will simply launch ComfyUI with optimized memory settings (low-vram) and open your browser.
+## 🎮 Using Magic Mirror
 
-### 📥 Required Models
+### Loading the Workflow
 
-To use Flux Schnell on MacBook Air, you need the following models:
+1. Open browser to http://127.0.0.1:8188
+2. Load the recommended workflow:
+   - **Mac Mini:** `shreenay_workflow_macmini.json`
+   - **MacBook Air:** `shreenay_workflow_macbook_air.json`
 
-1.  **UNET (GGUF)**: [flux1-schnell-Q4_0.gguf](https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_0.gguf)
-    - Place in `models/unet/`
-2.  **CLIP (GGUF/Safetensors)**: [t5-v1_1-xxl-encoder-Q3_K_M.gguf](https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_M.gguf) and `clip_l.safetensors`
-    - Place in `models/clip/`
-3.  **VAE**: `flux_ae.safetensors`
-    - Place in `models/vae/`
+### Generating Your Portrait
 
-### 🔧 Custom Nodes
+1. **Grant camera permissions** when prompted
+2. Select a **character** from the dropdown (e.g., "Brave Medieval Knight")
+3. Select a **place** from the dropdown (e.g., "in a Magical Castle")
+4. Click **"Queue Prompt"**
+5. Wait 10-20 seconds
+6. See yourself transformed!
 
-Install the following custom nodes via ComfyUI Manager:
-- `ComfyUI-GGUF` (for loading the quantized models)
+---
 
-## 🎨 How to Build the Workflow
+## 🛠️ Available Workflows
 
-Once the ComfyUI browser window opens, follow these steps to build your Magic Mirror:
+### Hardware-Specific (Recommended)
 
-### 1. The Power Source
-Add a **Unet Loader (GGUF)** for the model and **DualCLIPLoader (GGUF)** for the CLIP/T5. Select the Flux models downloaded earlier.
+- **`shreenay_workflow_macmini.json`** - Flux Schnell (Mac Mini, 32GB)
+  - Highest quality
+  - 4 steps, ~10-15 seconds
 
-### 2. Add the Magic Nodes
-Right-click and find the **Magic Mirror** category. Add these nodes:
-- **Magic: The Eye 📸**: Your camera (outputs image and **status**).
-- **Magic: Character Selector 🎭**: Choose your costume.
-- **Magic: Place Selector 🌍**: Choose your destination.
-- **Magic: The Brain 🧠**: The logic center (outputs **prompt** and **negative_prompt**).
-- **Magic: Prompt Editor ✍️**: (Optional) Sit here to see or change the AI's idea!
-- **Magic: The Painter 🎨**: The artist.
+- **`shreenay_workflow_macbook_air.json`** - SDXL Turbo (MacBook Air, 8GB)
+  - Fast and efficient
+  - 2 steps, ~15-20 seconds
 
-### 3. Connect the "Noodles"
-- **The Brain Logic**: 
-    - Connect **Selectors** to **The Brain**.
-    - Connect **The Brain's `prompt`** to the **Prompt Editor**.
-    - Connect **The Brain's `negative_prompt`** directly to **The Painter**.
-- **The Painter**: 
-    - Connect **MODEL**, **CLIP**, and **VAE** from your Loader to **The Painter**.
-    - Connect **Prompt Editor's `prompt`** to **The Painter**.
-    - Connect **IMAGE** from **The Eye** to **The Painter**.
-- **Visual Feedback**:
-    - Add a **Preview Image** node for the final picture.
-    - (Optional) Add a "Show Text" or "Display String" node (if you have one) to **The Eye's `status`** to see when a photo is taken.
+### Alternative Workflows
 
-### 4. Click "Queue Prompt"
-Watch yourself transform into a friendly Pixar-style character! 🚀
+- **`shreenay_workflow_sd15.json`** - SD 1.5 (most memory efficient)
+- **`shreenay_workflow_flux_schnell.json`** - Flux (alternative Mac Mini)
+- **`shreenay_workflow.json`** - SDXL (original)
 
-## 🧠 Key Design Decisions
+---
 
-- **Flux Schnell Optimization**: Configured with 4 steps and 1.0 Guidance for the best speed/quality balance on M-series chips.
-- **Memory Management**: Uses `--lowvram` and `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` to prevent crashes on MacBook Air.
-- **Graceful Failures**: If the webcam is busy or fails, the system returns a blank black image instead of crashing.
-- **Color Correction**: Automatically handles OpenCV's BGR to RGB conversion for correct colors in AI processing.
-- **Mac Permissons**: Isoloated camera logic to ensure `cv2.VideoCapture` is properly released to avoid "camera already in use" errors common on macOS.
+## 🔧 Custom Nodes
 
-## 📹 Webcam Troubleshooting (macOS)
+All nodes are in the **"Magic Mirror"** category in ComfyUI:
 
-If you see an error like `Magic Mirror could not open camera 0` or a black image:
+- **Magic: The Eye 📸** (MagicWebcam) - Camera capture
+- **Magic: Character Selector 🎭** - Choose costume
+- **Magic: Place Selector 🌍** - Choose location
+- **Magic: The Brain 🧠** (MagicPromptBuilder) - Creates prompts
+- **Magic: Prompt Editor ✍️** - Edit prompts manually
+- **Magic: The Painter 🎨** (MagicPainterWrapper) - Standard painter for SDXL/SD 1.5
+- **Magic: The Flux Painter ✨** (MagicPainterFlux) - Flux-optimized painter
 
-### 1. Grant Permissions
-macOS requires explicit permission for Terminal apps to access the camera.
-1.  Open your Terminal.
-2.  Run the diagnostic script:
-    ```bash
-    source venv/bin/activate
-    python diagnostic_camera.py
-    ```
-3.  **Watch for a macOS popup**: A dialog will appear asking for Camera access. Click **OK**.
-4.  Go to **System Settings > Privacy & Security > Camera** and ensure your Terminal app is toggled **ON**.
+---
 
-### 2. Check Camera ID
-If you have an external webcam, it might not be `ID 0`.
-1.  The `diagnostic_camera.py` script will list all working IDs it finds.
-2.  Update the **Magic: The Eye** node in ComfyUI with the correct `camera_id` (usually `1` for external).
+## 🐛 Troubleshooting
 
-### 3. Background Threading Fix
-We have already added `export OPENCV_AVFOUNDATION_SKIP_AUTH=1` to the launcher to prevent OpenCV from crashing when running inside ComfyUI's background threads.
+### "Out of Memory" Error
+
+**MacBook Air:**
+- Make sure you're using `run_macbook.command` (has --lowvram)
+- Try `shreenay_workflow_sd15.json` (most efficient)
+- Close other applications
+
+**Mac Mini:**
+- Restart ComfyUI
+- Check Activity Monitor for memory leaks
+
+### Models Not Found
+
+```bash
+# Check model file sizes (should be > 1MB)
+ls -lh models/unet/
+ls -lh models/clip/
+ls -lh models/vae/
+
+# Re-run setup if corrupted
+./setup_macmini.sh  # or setup_macbook.sh
+```
+
+### Webcam Not Working
+
+1. **Grant Camera Permissions:**
+   - System Settings > Privacy & Security > Camera
+   - Enable for Terminal/your launcher app
+
+2. **Try Different Camera ID:**
+   - In MagicWebcam node, change camera_id from 0 to 1
+
+3. **Check Camera Availability:**
+   ```bash
+   source venv/bin/activate
+   python diagnostic_camera.py
+   ```
+
+### Slow Generation
+
+**MacBook Air:**
+- Use SDXL Turbo workflow (2 steps)
+- Or SD 1.5 workflow with lower steps (10-15)
+
+**Mac Mini:**
+- Flux should be fast (4 steps)
+- Close other memory-heavy apps
+
+---
+
+## 📁 File Structure
+
+```
+magic-mirror/
+├── shreenay_workflow_macmini.json        # ⭐ Mac Mini optimized
+├── shreenay_workflow_macbook_air.json    # ⭐ MacBook Air optimized
+├── setup_macmini.sh                      # Mac Mini setup
+├── setup_macbook.sh                      # MacBook Air setup
+├── run_macmini.command                   # Mac Mini launcher
+├── run_macbook.command                   # MacBook Air launcher
+├── SETUP_GUIDE.md                        # Detailed documentation
+├── IMPLEMENTATION_SUMMARY.md             # Technical details
+└── custom_nodes/magic-mirror/            # Custom nodes
+    ├── nodes_camera.py                   # Webcam node
+    ├── nodes_logic.py                    # Brain, Painters, Selectors
+    └── config.py                         # Characters & Places
+```
+
+---
+
+## 🎨 Customization
+
+### Adding Characters or Places
+
+Edit `custom_nodes/magic-mirror/config.py`:
+
+```python
+CHARACTERS = [
+    "Brave Medieval Knight",
+    "Space Explorer",
+    "Your New Character Here",  # Add here!
+]
+
+PLACES = [
+    "in a Magical Castle",
+    "on Mars",
+    "Your New Place Here",  # Add here!
+]
+```
+
+Restart ComfyUI to see changes.
+
+---
+
+## 📚 Documentation
+
+- **SETUP_GUIDE.md** - Complete setup and usage guide
+- **IMPLEMENTATION_SUMMARY.md** - Technical implementation details
+
+---
+
+## 🔮 Next Steps (Coming Soon)
+
+- **IP-Adapter Integration** - Better face preservation
+- **Model Warm-up** - Faster first generation
+- **Progress Indicators** - Kid-friendly status messages
+- **Image Gallery** - See all your transformations
+
+---
+
+## 🧠 Technical Details
+
+### Mac Mini Configuration
+- **Model:** Flux Schnell Q4 GGUF
+- **Memory:** --highvram (optimized for 32GB)
+- **Settings:** 4 steps, guidance 3.5, euler sampler
+- **Quality:** Highest - Best Pixar-style results
+
+### MacBook Air Configuration
+- **Model:** SDXL Turbo
+- **Memory:** --lowvram --disable-smart-memory (optimized for 8GB)
+- **Settings:** 2 steps, guidance 1.0, euler sampler
+- **Quality:** Good - Fast and memory efficient
+
+### Memory Management
+- `PYTORCH_ENABLE_MPS_FALLBACK=1` - Metal Performance Shaders fallback
+- `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` - Prevents memory crashes
+
+---
 
 ## 🧪 Testing
 
-The project includes a suite of unit tests to ensure logic remains sound even if configuration files are modified:
-
+Run unit tests:
 ```bash
 python3 -m unittest test_logic.py
 ```
 
 ---
-*Created with ❤️ for Shreenay.*
+
+## 📄 License & Credits
+
+- **ComfyUI** - Core diffusion UI framework
+- **Flux Schnell** - Black Forest Labs
+- **IP-Adapter** - Tencent ARC
+- **Magic Mirror Custom Nodes** - Original implementation
+
+---
+
+*Made with ❤️ for Shreenay*
