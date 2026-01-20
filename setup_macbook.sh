@@ -110,8 +110,8 @@ CLIP_VISION_FILE="$CLIP_VISION_DIR/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
 CLIP_VISION_URL="https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors"
 
 # IP-Adapter for SD 1.5 (face-focused, lightweight)
-IPADAPTER_FILE="$IPADAPTER_DIR/ip-adapter-face_sd15.bin"
-IPADAPTER_URL="https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-face_sd15.bin"
+IPADAPTER_FILE="$IPADAPTER_DIR/ip-adapter-plus-face_sd15.bin"
+IPADAPTER_URL="https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-plus-face_sd15.bin"
 
 download_model "$SD15_URL" "$SD15_FILE" "SD 1.5 (Realistic Vision)" 2000000000        # 2GB min
 download_model "$CLIP_VISION_URL" "$CLIP_VISION_FILE" "CLIP Vision Encoder" 1000000000  # 1GB min
